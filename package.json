@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://mortezaanabestani.github.io/codabiat",
+  "homepage": "https://MortezaAnabestani.github.io/atefe_thesis.git",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
