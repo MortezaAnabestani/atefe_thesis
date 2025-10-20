@@ -64,25 +64,25 @@ const CrisisStage = ({ onComplete }) => {
   const createBinaryCodeStars = (scene) => {
     const bytesCodes = [
       "01010101",
-      "11001100",
+      "0",
       "10101010",
-      "11110000",
+      "1",
       "00001111",
-      "10011001",
+      "0",
       "11100011",
-      "01100110",
+      "1",
       "11010010",
-      "01010110",
+      "0",
       "10110101",
-      "11001001",
+      "0",
       "11111111",
-      "00000000",
+      "1",
       "10101010",
-      "01010101",
+      "0",
       "11110000",
-      "00001111",
+      "0",
       "10011001",
-      "01100110",
+      "0",
     ];
 
     const bitCodes = [
@@ -233,25 +233,25 @@ const CrisisStage = ({ onComplete }) => {
         createFloatingCodeSnippets(scene);
         break;
       case 1:
-        createThreeBodies(scene);
-        break;
-      case 2:
         createTransformation(scene);
         break;
-      case 3:
+      case 2:
         createEventParticles(scene);
         break;
-      case 4:
+      case 3:
         createTargetGeometry(scene);
         break;
-      case 5:
+      case 4:
         createIntegrationVisual(scene);
         break;
-      case 6:
+      case 5:
         createFrameworkStructure(scene);
         break;
-      case 7:
+      case 6:
         createAchievementsVisual(scene);
+        break;
+      case 7:
+        createThreeBodies(scene);
         break;
     }
   };
@@ -500,17 +500,6 @@ const CrisisStage = ({ onComplete }) => {
         break;
 
       case 1:
-        objectsRef.current.papers.forEach((obj, i) => {
-          if (obj.geometry.type === "SphereGeometry") {
-            obj.rotation.x = time * 0.3 + i;
-            obj.rotation.y = time * 0.2 + i;
-            obj.scale.x = 1 + Math.sin(time + i) * 0.1;
-            obj.scale.y = 1 + Math.sin(time + i) * 0.1;
-          }
-        });
-        break;
-
-      case 2:
         objectsRef.current.papers.forEach((paper, i) => {
           paper.scale.x = 1 + Math.sin(time + i) * 0.1;
         });
@@ -522,7 +511,7 @@ const CrisisStage = ({ onComplete }) => {
         });
         break;
 
-      case 3:
+      case 2:
         objectsRef.current.pixels.forEach((particle, i) => {
           particle.position.x += Math.sin(time * 2 + i) * 0.1;
           particle.position.y += Math.cos(time * 2 + i) * 0.1;
@@ -530,13 +519,13 @@ const CrisisStage = ({ onComplete }) => {
         });
         break;
 
-      case 4:
+      case 3:
         objectsRef.current.papers.forEach((ring, i) => {
           ring.rotation.z = time + i * 0.5;
         });
         break;
 
-      case 5:
+      case 4:
         objectsRef.current.papers.forEach((sphere, i) => {
           if (sphere.geometry.type === "SphereGeometry") {
             sphere.rotation.x = time * 0.4 + i;
@@ -548,17 +537,28 @@ const CrisisStage = ({ onComplete }) => {
         });
         break;
 
-      case 6:
+      case 5:
         objectsRef.current.pixels.forEach((node, i) => {
           node.scale.setScalar(0.5 + Math.sin(time * 2 + i * 0.1) * 0.5);
         });
         break;
 
-      case 7:
+      case 6:
         objectsRef.current.papers.forEach((box, i) => {
           box.rotation.x = time * 0.5 + i * 0.2;
           box.rotation.y = time * 0.3 + i * 0.2;
           box.position.y += Math.sin(time + i) * 0.05;
+        });
+        break;
+
+      case 7:
+        objectsRef.current.papers.forEach((obj, i) => {
+          if (obj.geometry.type === "SphereGeometry") {
+            obj.rotation.x = time * 0.3 + i;
+            obj.rotation.y = time * 0.2 + i;
+            obj.scale.x = 1 + Math.sin(time + i) * 0.1;
+            obj.scale.y = 1 + Math.sin(time + i) * 0.1;
+          }
         });
         break;
     }
@@ -600,13 +600,6 @@ const CrisisStage = ({ onComplete }) => {
         desc: "برای قرن‌ها، علم‌الادب و پژوهش‌های ادبی بر شالودۀ یک ابرانگارۀ مسلط استوار بوده است",
         formula: "متن = ابژهٔ ثابت",
         items: [],
-        shake: false,
-      },
-      {
-        title: "یک ادبیات و سه بدن",
-        desc: "ادبیات در تاریخ خود سه سکوی مادی را تجربه کرده است که هرکدام منطق و قواعد خاص خود را تحمیل می‌کند",
-        formula: "حنجره ← کاغذ ← پیکسل",
-        items: ["بدن گذرا و شفاهی", "بدن ایستا و مکتوب", "بدن پویا و اجرایی"],
         shake: false,
       },
       {
@@ -664,6 +657,13 @@ const CrisisStage = ({ onComplete }) => {
           " ارائۀ طبقه‌بندی نوینی از گونه‌ها براساس استعارۀ کارکردی متن (معیاری درون‌رشته‌ای)",
           "واکاوی نظام‌مند آثار کدبی فارسی با تکیه‌بر جعبه‌ابزار تحلیلی رساله",
         ],
+        shake: false,
+      },
+      {
+        title: "یک ادبیات و سه بدن",
+        desc: "ادبیات در تاریخ خود سه سکوی مادی را تجربه کرده است که هرکدام منطق و قواعد خاص خود را تحمیل می‌کند",
+        formula: "حنجره ← کاغذ ← پیکسل",
+        items: ["بدن گذرا و شفاهی", "بدن ایستا و مکتوب", "بدن پویا و اجرایی"],
         shake: false,
       },
     ];
