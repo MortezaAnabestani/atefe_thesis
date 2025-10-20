@@ -1,5 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+// ========================================
+// Stage 1: Crisis
+// ========================================
 
+import { useState, useEffect, useRef } from "react";
 import * as THREE from "three";
 
 const CrisisStage = ({ onComplete }) => {
@@ -9,79 +12,202 @@ const CrisisStage = ({ onComplete }) => {
   const rendererRef = useRef(null);
   const [currentSection, setCurrentSection] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const currentSectionRef = useRef(0);
 
-  // Objects for each section
   const objectsRef = useRef({
     particles: [],
     papers: [],
     pixels: [],
-    textMeshes: [],
+    binaryStars: [],
   });
 
   const sections = [
     { id: 0, name: "ابرانگاره", color: 0xf59e0b },
-    { id: 1, name: "کاغذ", color: 0xd4a574 },
+    { id: 1, name: "سه بدن", color: 0xd4a574 },
     { id: 2, name: "گذار", color: 0xef4444 },
     { id: 3, name: "رخداد", color: 0x06b6d4 },
     { id: 4, name: "هدف", color: 0x9333ea },
-    { id: 5, name: "کدبیات", color: 0xef4444 },
+    { id: 5, name: "تلفیق", color: 0xef4444 },
     { id: 6, name: "چارچوب", color: 0x06b6d4 },
+    { id: 7, name: "دستاوردها", color: 0x10b981 },
   ];
 
-  // Initialize Three.js scene
+  // Helper function to create text sprite
+  const createTextSprite = (text, color) => {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    canvas.width = 256;
+    canvas.height = 128;
+
+    context.fillStyle = "rgba(0, 0, 0, 0)";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    context.font = "Bold 40px monospace";
+    context.fillStyle = color;
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    context.fillText(text, canvas.width / 2, canvas.height / 2);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    const material = new THREE.SpriteMaterial({
+      map: texture,
+      transparent: true,
+      opacity: 0.8,
+    });
+    const sprite = new THREE.Sprite(material);
+    sprite.scale.set(4, 2, 1);
+
+    return sprite;
+  };
+
+  // Create binary code stars
+  const createBinaryCodeStars = (scene) => {
+    const bytesCodes = [
+      "01010101",
+      "11001100",
+      "10101010",
+      "11110000",
+      "00001111",
+      "10011001",
+      "11100011",
+      "01100110",
+      "11010010",
+      "01010110",
+      "10110101",
+      "11001001",
+      "11111111",
+      "00000000",
+      "10101010",
+      "01010101",
+      "11110000",
+      "00001111",
+      "10011001",
+      "01100110",
+    ];
+
+    const bitCodes = [
+      "0",
+      "1",
+      "01",
+      "10",
+      "00",
+      "11",
+      "001",
+      "010",
+      "101",
+      "110",
+      "0011",
+      "1100",
+      "0101",
+      "1010",
+      "0110",
+      "1001",
+    ];
+
+    for (let i = 0; i < 300; i++) {
+      const isBytes = Math.random() > 0.4;
+      const code = isBytes
+        ? bytesCodes[Math.floor(Math.random() * bytesCodes.length)]
+        : bitCodes[Math.floor(Math.random() * bitCodes.length)];
+
+      const x = (Math.random() - 0.5) * 200;
+      const y = (Math.random() - 0.5) * 200;
+      const z = (Math.random() - 0.5) * 200;
+
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = 128;
+      canvas.height = 128;
+
+      ctx.fillStyle = "rgba(0, 0, 0, 0)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const colors = ["#00ff00", "#0088ff", "#ff00ff", "#00ffff", "#ffff00", "#ff6600", "#00ff88"];
+      ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+      ctx.font = isBytes ? "Bold 20px monospace" : "Bold 24px monospace";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(code, canvas.width / 2, canvas.height / 2);
+
+      const texture = new THREE.CanvasTexture(canvas);
+      const material = new THREE.SpriteMaterial({
+        map: texture,
+        transparent: true,
+        opacity: 0.8,
+      });
+
+      const sprite = new THREE.Sprite(material);
+      sprite.position.set(x, y, z);
+      sprite.scale.set(isBytes ? 6 : 5, isBytes ? 6 : 5, 1);
+      sprite.userData = {
+        vx: (Math.random() - 0.5) * 0.02,
+        vy: (Math.random() - 0.5) * 0.02,
+        vz: (Math.random() - 0.5) * 0.02,
+        rotation: Math.random() * Math.PI * 2,
+      };
+
+      scene.add(sprite);
+      objectsRef.current.binaryStars.push(sprite);
+    }
+  };
+
   useEffect(() => {
     if (!mountRef.current) return;
 
-    // Scene setup
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x000000, 0.002);
+    scene.background = new THREE.Color(0x000011);
+    scene.fog = new THREE.FogExp2(0x000011, 0.0008);
     sceneRef.current = scene;
 
-    // Camera
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 50;
     cameraRef.current = camera;
 
-    // Renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     mountRef.current.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
-    // Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
     scene.add(ambientLight);
 
-    const pointLight = new THREE.PointLight(0xffffff, 1);
+    const pointLight = new THREE.PointLight(0xffffff, 0.5);
     pointLight.position.set(50, 50, 50);
     scene.add(pointLight);
 
-    // Create particle field (background)
-    createParticleField(scene);
-
-    // Create initial section objects
+    createBinaryCodeStars(scene);
     createSectionObjects(scene, 0);
 
-    // Animation loop
     let animationId;
     const animate = () => {
       animationId = requestAnimationFrame(animate);
 
-      // Rotate particles
+      // Animate binary stars
+      objectsRef.current.binaryStars.forEach((star) => {
+        star.position.x += star.userData.vx;
+        star.position.y += star.userData.vy;
+        star.position.z += star.userData.vz;
+
+        // Wrap around
+        if (Math.abs(star.position.x) > 120) star.userData.vx *= -1;
+        if (Math.abs(star.position.y) > 120) star.userData.vy *= -1;
+        if (Math.abs(star.position.z) > 120) star.userData.vz *= -1;
+
+        star.material.rotation += 0.01;
+      });
+
       objectsRef.current.particles.forEach((p) => {
         p.rotation.x += 0.001;
         p.rotation.y += 0.001;
       });
 
-      // Animate based on current section
-      animateSection(currentSection);
+      animateSection(currentSectionRef.current);
 
       renderer.render(scene, camera);
     };
     animate();
 
-    // Handle resize
     const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
@@ -89,7 +215,6 @@ const CrisisStage = ({ onComplete }) => {
     };
     window.addEventListener("resize", handleResize);
 
-    // Cleanup
     return () => {
       window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(animationId);
@@ -97,103 +222,105 @@ const CrisisStage = ({ onComplete }) => {
     };
   }, []);
 
-  // Create particle field
-  const createParticleField = (scene) => {
-    const geometry = new THREE.BufferGeometry();
-    const vertices = [];
-
-    for (let i = 0; i < 2000; i++) {
-      vertices.push((Math.random() - 0.5) * 200, (Math.random() - 0.5) * 200, (Math.random() - 0.5) * 200);
-    }
-
-    geometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3));
-    const material = new THREE.PointsMaterial({
-      color: 0xffffff,
-      size: 0.3,
-      transparent: true,
-      opacity: 0.6,
-    });
-
-    const particles = new THREE.Points(geometry, material);
-    scene.add(particles);
-    objectsRef.current.particles.push(particles);
-  };
-
-  // Create objects for each section
   const createSectionObjects = (scene, sectionId) => {
-    // Clear previous objects
     objectsRef.current.papers.forEach((obj) => scene.remove(obj));
     objectsRef.current.pixels.forEach((obj) => scene.remove(obj));
     objectsRef.current.papers = [];
     objectsRef.current.pixels = [];
 
     switch (sectionId) {
-      case 0: // ابرانگاره - Books floating
-        createFloatingBooks(scene);
+      case 0:
+        createFloatingCodeSnippets(scene);
         break;
-      case 1: // کاغذ - Paper sheets
-        createPaperSheets(scene);
+      case 1:
+        createThreeBodies(scene);
         break;
-      case 2: // گذار - Transformation
+      case 2:
         createTransformation(scene);
         break;
-      case 3: // رخداد - Event particles
+      case 3:
         createEventParticles(scene);
         break;
-      case 4: // هدف - Target geometry
+      case 4:
         createTargetGeometry(scene);
         break;
-      case 5: // کدبیات - Framework structure
-        createTransformation(scene);
+      case 5:
+        createIntegrationVisual(scene);
         break;
-      case 6: // چارچوب - Framework structure
+      case 6:
         createFrameworkStructure(scene);
         break;
+      case 7:
+        createAchievementsVisual(scene);
+        break;
     }
   };
 
-  // Section 0: Floating books
-  const createFloatingBooks = (scene) => {
-    for (let i = 0; i < 5; i++) {
-      const geometry = new THREE.BoxGeometry(3, 4, 0.5);
+  const createFloatingCodeSnippets = (scene) => {
+    const codeSnippets = [
+      "if()",
+      "for",
+      "{...}",
+      "map()",
+      "const",
+      "let",
+      "<div>",
+      "<h1>",
+      "css",
+      "===",
+      "=>",
+      "[]",
+      "fn",
+      "var",
+      "try",
+    ];
+
+    for (let i = 0; i < 20; i++) {
+      const code = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+      const colors = ["#f59e0b", "#06b6d4", "#ef4444", "#9333ea", "#10b981"];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+
+      const sprite = createTextSprite(code, color);
+      sprite.position.set((Math.random() - 0.5) * 50, (Math.random() - 0.5) * 40, (Math.random() - 0.5) * 30);
+
+      scene.add(sprite);
+      objectsRef.current.papers.push(sprite);
+    }
+  };
+
+  const createThreeBodies = (scene) => {
+    const positions = [-15, 0, 15];
+    const names = ["حنجره", "کاغذ", "پیکسل"];
+    const colors = [0xff6b6b, 0xfeca57, 0x48dbfb];
+
+    positions.forEach((x, idx) => {
+      const geometry = new THREE.SphereGeometry(3, 32, 32);
       const material = new THREE.MeshPhongMaterial({
-        color: 0xf59e0b,
-        emissive: 0xf59e0b,
-        emissiveIntensity: 0.2,
+        color: colors[idx],
+        emissive: colors[idx],
+        emissiveIntensity: 0.4,
       });
-      const book = new THREE.Mesh(geometry, material);
+      const body = new THREE.Mesh(geometry, material);
+      body.position.set(x, 0, 0);
+      scene.add(body);
+      objectsRef.current.papers.push(body);
 
-      book.position.set((Math.random() - 0.5) * 30, (Math.random() - 0.5) * 20, (Math.random() - 0.5) * 10);
+      const sprite = createTextSprite(names[idx], `#${colors[idx].toString(16)}`);
+      sprite.position.set(x, -6, 0);
+      scene.add(sprite);
+      objectsRef.current.papers.push(sprite);
+    });
 
-      scene.add(book);
-      objectsRef.current.papers.push(book);
-    }
+    // Connection lines
+    const material = new THREE.LineBasicMaterial({ color: 0x888888 });
+    const points = [new THREE.Vector3(-15, 0, 0), new THREE.Vector3(15, 0, 0)];
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    const line = new THREE.Line(geometry, material);
+    scene.add(line);
+    objectsRef.current.papers.push(line);
   };
 
-  // Section 1: Paper sheets
-  const createPaperSheets = (scene) => {
-    for (let i = 0; i < 10; i++) {
-      const geometry = new THREE.PlaneGeometry(5, 7);
-      const material = new THREE.MeshPhongMaterial({
-        color: 0xf5f5dc,
-        side: THREE.DoubleSide,
-        transparent: true,
-        opacity: 0.8,
-      });
-      const paper = new THREE.Mesh(geometry, material);
-
-      paper.position.set((Math.random() - 0.5) * 40, (Math.random() - 0.5) * 30, (Math.random() - 0.5) * 20);
-      paper.rotation.x = Math.random() * Math.PI;
-      paper.rotation.y = Math.random() * Math.PI;
-
-      scene.add(paper);
-      objectsRef.current.papers.push(paper);
-    }
-  };
-
-  // Section 2: Transformation (papers breaking into pixels)
   const createTransformation = (scene) => {
-    // Papers on left
     for (let i = 0; i < 5; i++) {
       const geometry = new THREE.PlaneGeometry(3, 4);
       const material = new THREE.MeshPhongMaterial({
@@ -206,7 +333,6 @@ const CrisisStage = ({ onComplete }) => {
       objectsRef.current.papers.push(paper);
     }
 
-    // Pixels on right
     for (let i = 0; i < 100; i++) {
       const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
       const material = new THREE.MeshPhongMaterial({
@@ -225,7 +351,6 @@ const CrisisStage = ({ onComplete }) => {
     }
   };
 
-  // Section 3: Event particles
   const createEventParticles = (scene) => {
     const geometry = new THREE.SphereGeometry(0.3, 8, 8);
 
@@ -236,19 +361,16 @@ const CrisisStage = ({ onComplete }) => {
         emissiveIntensity: 0.5,
       });
       const particle = new THREE.Mesh(geometry, material);
-
       particle.position.set(
         (Math.random() - 0.5) * 50,
         (Math.random() - 0.5) * 50,
         (Math.random() - 0.5) * 30
       );
-
       scene.add(particle);
       objectsRef.current.pixels.push(particle);
     }
   };
 
-  // Section 4: Target geometry
   const createTargetGeometry = (scene) => {
     const ringGeometry = new THREE.TorusGeometry(10, 0.5, 16, 100);
 
@@ -266,9 +388,49 @@ const CrisisStage = ({ onComplete }) => {
     }
   };
 
-  // Section 5: Framework structure
+  const createIntegrationVisual = (scene) => {
+    const leftSphere = new THREE.Mesh(
+      new THREE.SphereGeometry(5, 32, 32),
+      new THREE.MeshPhongMaterial({
+        color: 0x06b6d4,
+        emissive: 0x06b6d4,
+        emissiveIntensity: 0.3,
+      })
+    );
+    leftSphere.position.set(-15, 0, 0);
+    scene.add(leftSphere);
+    objectsRef.current.papers.push(leftSphere);
+
+    const rightSphere = new THREE.Mesh(
+      new THREE.SphereGeometry(5, 32, 32),
+      new THREE.MeshPhongMaterial({
+        color: 0xef4444,
+        emissive: 0xef4444,
+        emissiveIntensity: 0.3,
+      })
+    );
+    rightSphere.position.set(15, 0, 0);
+    scene.add(rightSphere);
+    objectsRef.current.papers.push(rightSphere);
+
+    // Connection particles
+    for (let i = 0; i < 50; i++) {
+      const x = -15 + (i / 50) * 30;
+      const y = Math.sin(i * 0.5) * 5;
+      const geometry = new THREE.SphereGeometry(0.3, 8, 8);
+      const material = new THREE.MeshPhongMaterial({
+        color: 0x9333ea,
+        emissive: 0x9333ea,
+        emissiveIntensity: 0.6,
+      });
+      const particle = new THREE.Mesh(geometry, material);
+      particle.position.set(x, y, 0);
+      scene.add(particle);
+      objectsRef.current.pixels.push(particle);
+    }
+  };
+
   const createFrameworkStructure = (scene) => {
-    // Create a grid structure
     const material = new THREE.LineBasicMaterial({ color: 0x3d3d3d });
 
     for (let i = -20; i <= 20; i += 5) {
@@ -287,7 +449,6 @@ const CrisisStage = ({ onComplete }) => {
       objectsRef.current.papers.push(line);
     }
 
-    // Add nodes at intersections
     for (let x = -20; x <= 20; x += 5) {
       for (let y = -20; y <= 20; y += 5) {
         const geometry = new THREE.SphereGeometry(0.5, 8, 8);
@@ -304,29 +465,54 @@ const CrisisStage = ({ onComplete }) => {
     }
   };
 
-  // Animate based on section
+  const createAchievementsVisual = (scene) => {
+    const achievements = [
+      { pos: [-20, 10, 0], color: 0x10b981 },
+      { pos: [-5, 15, 0], color: 0x10b981 },
+      { pos: [10, 10, 0], color: 0x10b981 },
+      { pos: [-12, -8, 0], color: 0x10b981 },
+      { pos: [5, -10, 0], color: 0x10b981 },
+    ];
+
+    achievements.forEach((item) => {
+      const geometry = new THREE.BoxGeometry(3, 3, 3);
+      const material = new THREE.MeshPhongMaterial({
+        color: item.color,
+        emissive: item.color,
+        emissiveIntensity: 0.4,
+      });
+      const box = new THREE.Mesh(geometry, material);
+      box.position.set(...item.pos);
+      scene.add(box);
+      objectsRef.current.papers.push(box);
+    });
+  };
+
   const animateSection = (sectionId) => {
     const time = Date.now() * 0.001;
 
     switch (sectionId) {
-      case 0: // Floating books
-        objectsRef.current.papers.forEach((book, i) => {
-          book.rotation.y = time + i;
-          book.position.y += Math.sin(time + i) * 0.02;
+      case 0:
+        objectsRef.current.papers.forEach((sprite, i) => {
+          sprite.position.y += Math.sin(time + i) * 0.05;
+          sprite.position.x += Math.cos(time * 0.5 + i) * 0.03;
         });
         break;
 
-      case 1: // Paper sheets
-        objectsRef.current.papers.forEach((paper, i) => {
-          paper.rotation.x = time * 0.5 + i;
-          paper.rotation.y = time * 0.3 + i;
+      case 1:
+        objectsRef.current.papers.forEach((obj, i) => {
+          if (obj.geometry.type === "SphereGeometry") {
+            obj.rotation.x = time * 0.3 + i;
+            obj.rotation.y = time * 0.2 + i;
+            obj.scale.x = 1 + Math.sin(time + i) * 0.1;
+            obj.scale.y = 1 + Math.sin(time + i) * 0.1;
+          }
         });
         break;
 
-      case 2: // Transformation
+      case 2:
         objectsRef.current.papers.forEach((paper, i) => {
           paper.scale.x = 1 + Math.sin(time + i) * 0.1;
-          paper.material.opacity = 0.5 + Math.sin(time + i) * 0.5;
         });
         objectsRef.current.pixels.forEach((pixel, i) => {
           pixel.position.x += Math.sin(time + i) * 0.05;
@@ -336,7 +522,7 @@ const CrisisStage = ({ onComplete }) => {
         });
         break;
 
-      case 3: // Event particles
+      case 3:
         objectsRef.current.pixels.forEach((particle, i) => {
           particle.position.x += Math.sin(time * 2 + i) * 0.1;
           particle.position.y += Math.cos(time * 2 + i) * 0.1;
@@ -344,46 +530,52 @@ const CrisisStage = ({ onComplete }) => {
         });
         break;
 
-      case 4: // Target
+      case 4:
         objectsRef.current.papers.forEach((ring, i) => {
           ring.rotation.z = time + i * 0.5;
         });
         break;
 
-      case 5: // Framework
+      case 5:
+        objectsRef.current.papers.forEach((sphere, i) => {
+          if (sphere.geometry.type === "SphereGeometry") {
+            sphere.rotation.x = time * 0.4 + i;
+            sphere.rotation.y = time * 0.3 + i;
+          }
+        });
+        objectsRef.current.pixels.forEach((particle, i) => {
+          particle.scale.setScalar(0.5 + Math.sin(time * 2 + i) * 0.5);
+        });
+        break;
+
+      case 6:
         objectsRef.current.pixels.forEach((node, i) => {
           node.scale.setScalar(0.5 + Math.sin(time * 2 + i * 0.1) * 0.5);
+        });
+        break;
+
+      case 7:
+        objectsRef.current.papers.forEach((box, i) => {
+          box.rotation.x = time * 0.5 + i * 0.2;
+          box.rotation.y = time * 0.3 + i * 0.2;
+          box.position.y += Math.sin(time + i) * 0.05;
         });
         break;
     }
   };
 
-  // Handle section change
   useEffect(() => {
+    currentSectionRef.current = currentSection;
     if (!sceneRef.current) return;
 
     setIsTransitioning(true);
 
-    // Fade out current objects
-    const fadeOut = () => {
-      [...objectsRef.current.papers, ...objectsRef.current.pixels].forEach((obj) => {
-        if (obj.material) {
-          obj.material.transparent = true;
-          obj.material.opacity = Math.max(0, obj.material.opacity - 0.05);
-        }
-      });
-    };
-
-    const fadeInterval = setInterval(fadeOut, 16);
-
     setTimeout(() => {
-      clearInterval(fadeInterval);
       createSectionObjects(sceneRef.current, currentSection);
       setIsTransitioning(false);
-    }, 500);
+    }, 300);
   }, [currentSection]);
 
-  // Handle scroll
   useEffect(() => {
     const handleWheel = (e) => {
       if (isTransitioning) return;
@@ -401,21 +593,20 @@ const CrisisStage = ({ onComplete }) => {
     return () => window.removeEventListener("wheel", handleWheel);
   }, [currentSection, isTransitioning, onComplete]);
 
-  // Content for each section
   const getContent = () => {
     const contents = [
       {
         title: "ابرانگارهٔ مسلط",
-        desc: "برای قرن‌ها، پژوهش‌های ادبی بر شالودۀ یک ابرانگارۀ مسلط استوار بوده است",
+        desc: "برای قرن‌ها، علم‌الادب و پژوهش‌های ادبی بر شالودۀ یک ابرانگارۀ مسلط استوار بوده است",
         formula: "متن = ابژهٔ ثابت",
-        items: [""],
+        items: [],
         shake: false,
       },
       {
-        title: "سکوی کاغذ",
-        desc: "ما آموخته‌ایم که با امر ادبی همچون یک ساختار پایدار، کامل و خودبسنده مواجه شویم ",
-        formula: "کاغذ ← ثبات",
-        items: ["مادیت ایستا", "چاپی", "پایدار"],
+        title: "یک ادبیات و سه بدن",
+        desc: "ادبیات در تاریخ خود سه سکوی مادی را تجربه کرده است که هرکدام منطق و قواعد خاص خود را تحمیل می‌کند",
+        formula: "حنجره ← کاغذ ← پیکسل",
+        items: ["بدن گذرا و شفاهی", "بدن ایستا و مکتوب", "بدن پویا و اجرایی"],
         shake: false,
       },
       {
@@ -444,29 +635,34 @@ const CrisisStage = ({ onComplete }) => {
         shake: false,
       },
       {
-        title: " کدبیات",
-        desc: "چرا این رساله از کدبیات به جای ادبیات الکترونیک استفاده می‌کند؟",
-        formula: "دلایل",
+        title: "هِیلز و آرست",
+        desc: "این رساله با ترکیب بینش هستی‌شناختی کاترین هیلز و روش پدیدارشناختی اسپن آرست، یک چارچوب تحلیلی دووجهی را تدوین می‌کند",
+        formula: "هیلز ⟷ آرست",
+        items: ["پساانسان‌گرایی انتقادی", "ادبیات سخت‌پیما", "مادیت رسانه", "مادیت اجرایی", "سایبرمتن"],
+        shake: false,
+      },
+      {
+        title: "زیبایی‌شناسی رایانشی",
+        desc: " سازمان‌دهی شگردهای بیانی کدبیات در پنج دستۀ کارکردی",
+        formula: "⸎",
         items: [
-          "کژتابی اصطلاح ادبیات الکترونیک",
-          "تلاش برای واژه‌سازی یک مفهوم، تلاش برای روشن‌سازی فهم ",
-          "تخصیص زمینۀ پیدایی (کُد) در واژۀ پیشنهادی ",
-          "آشنایی‌زدایی صوری از واژۀ ادبیات، به قصد آشنایی‌زدایی از مفهوم ادبیات به معنای مصطلح",
-          "کمک به جداسازی رستۀ ادبیات الکترونیک از ادبیات مکتوب",
-          "عینیت‌بخشی به ماهیت بینارشته‌ای آن با ساخت آمیزشی واژگان",
+          "شگردهای رابط کاربری",
+          "شگردهای طراحی فضایی",
+          "شگردهای توالی زمانی",
+          "شگردهای چندرسانگی",
+          "شگردهای زیرساخت رویه‌ای",
         ],
         shake: false,
       },
       {
         title: "دستاوردها",
         desc: "عمده‌‌دست‌آوردهای این رساله عبارت‌اند از",
-        formula: "⸎",
+        formula: "✓",
         items: [
-          "ساخت چارچوب مفهومی بدیع از ادبیات الکترونیک بر پایۀ بازخوانی تلفیقی آراء کاترین هیلز",
-          "ساخت جعبه‌ابزاری تحلیلی منبعث از چارچوب مفهومی و بر پایۀ نظریۀ ادبیات سخت‌پیمای اسپن آرست",
-          "سازمان‌دهی شگردهای بیانی کدبیات در پنج دسته",
-          "ارائۀ طبقه‌بندی نوین گونه‌ها بر اساس استعارۀ کارکردی متن (رویکردی درون‌رشته‌ای)",
-          "واکاوی نظام‌مند اثار کدبی فارسی بر اساس چارچوب مفهومی و ابزار تحلیلی برآمده از رساله",
+          "تدوین چارچوبی مفهومی از ادبیات الکترونیک برپایۀ سنتز نظری و بازخوانی تلفیقی آراء هیلز در حوزه‌های مختلف (انسان‌شناسی، ابزارشناسی، رسانه‌شناسی، ادبیات‌شناسی)",
+          "تدوین شگردهای بیانی کدبیات (زیبایی‌شناسی رایانشی) با تکیه‌بر چارچوب مفهومی رساله و نظریۀ ادبیات سخت‌پیمای آرست",
+          " ارائۀ طبقه‌بندی نوینی از گونه‌ها براساس استعارۀ کارکردی متن (معیاری درون‌رشته‌ای)",
+          "واکاوی نظام‌مند آثار کدبی فارسی با تکیه‌بر جعبه‌ابزار تحلیلی رساله",
         ],
         shake: false,
       },
@@ -506,10 +702,8 @@ const CrisisStage = ({ onComplete }) => {
         }
       `}</style>
 
-      {/* Three.js Canvas */}
       <div ref={mountRef} className="absolute inset-0" />
 
-      {/* Content Overlay */}
       <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
         <div className="max-w-4xl w-full px-8 text-center">
           <h1
@@ -575,7 +769,6 @@ const CrisisStage = ({ onComplete }) => {
         </div>
       </div>
 
-      {/* Navigation */}
       <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 space-y-3 pointer-events-auto">
         {sections.map((section, i) => (
           <button
@@ -592,7 +785,6 @@ const CrisisStage = ({ onComplete }) => {
         ))}
       </div>
 
-      {/* Progress */}
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
         <div
           className="flex items-center gap-4 px-6 py-3 rounded-full backdrop-blur-sm"
@@ -613,7 +805,6 @@ const CrisisStage = ({ onComplete }) => {
         </div>
       </div>
 
-      {/* Hint */}
       {currentSection < sections.length - 1 && (
         <div className="fixed bottom-8 left-8 text-gray-500 text-sm animate-pulse">اسکرول برای ادامه ↓</div>
       )}
