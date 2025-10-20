@@ -1,7 +1,3 @@
-// ========================================
-// Stage 1: Crisis
-// ========================================
-
 import { useState, useEffect, useRef } from "react";
 import * as THREE from "three";
 
@@ -23,13 +19,16 @@ const CrisisStage = ({ onComplete }) => {
 
   const sections = [
     { id: 0, name: "ابرانگاره", color: 0xf59e0b },
-    { id: 1, name: "سه بدن", color: 0xd4a574 },
     { id: 2, name: "گذار", color: 0xef4444 },
     { id: 3, name: "رخداد", color: 0x06b6d4 },
     { id: 4, name: "هدف", color: 0x9333ea },
-    { id: 5, name: "تلفیق", color: 0xef4444 },
-    { id: 6, name: "چارچوب", color: 0x06b6d4 },
-    { id: 7, name: "دستاوردها", color: 0x10b981 },
+    { id: 5, name: "کدبیات", color: 0xff1493 },
+    { id: 6, name: "تلفیق", color: 0xef4444 },
+    { id: 7, name: "چارچوب", color: 0x06b6d4 },
+    { id: 8, name: "دستاوردها", color: 0x10b981 },
+    { id: 9, name: "روش تحقیق", color: 0x3b82f6 },
+    { id: 10, name: "ادبیات سخت‌پیما", color: 0x8b5cf6 },
+    { id: 11, name: "یک ادبیات و سه بدن", color: 0xd4a574 },
   ];
 
   // Helper function to create text sprite
@@ -245,12 +244,21 @@ const CrisisStage = ({ onComplete }) => {
         createIntegrationVisual(scene);
         break;
       case 5:
-        createFrameworkStructure(scene);
+        createCodeLiteratureVisual(scene);
         break;
       case 6:
-        createAchievementsVisual(scene);
+        createFrameworkStructure(scene);
         break;
       case 7:
+        createAchievementsVisual(scene);
+        break;
+      case 8:
+        createResearchMethodVisual(scene);
+        break;
+      case 9:
+        createHardCodeLiteratureVisual(scene);
+        break;
+      case 10:
         createThreeBodies(scene);
         break;
     }
@@ -430,6 +438,41 @@ const CrisisStage = ({ onComplete }) => {
     }
   };
 
+  const createCodeLiteratureVisual = (scene) => {
+    // Create particles made of visible code characters
+    const codeChars = ["0", "1", "{", "}", "[", "]", "(", ")", "=", ">", "<", "~"];
+    const geometry = new THREE.SphereGeometry(0.4, 8, 8);
+
+    for (let i = 0; i < 150; i++) {
+      const char = codeChars[Math.floor(Math.random() * codeChars.length)];
+      const material = new THREE.MeshPhongMaterial({
+        color: 0xff1493,
+        emissive: 0xff1493,
+        emissiveIntensity: 0.6,
+      });
+      const particle = new THREE.Mesh(geometry, material);
+      particle.position.set(
+        (Math.random() - 0.5) * 50,
+        (Math.random() - 0.5) * 50,
+        (Math.random() - 0.5) * 30
+      );
+      scene.add(particle);
+      objectsRef.current.pixels.push(particle);
+    }
+
+    // Create a large code structure in center
+    const boxGeometry = new THREE.BoxGeometry(15, 20, 2);
+    const boxMaterial = new THREE.MeshPhongMaterial({
+      color: 0xff1493,
+      emissive: 0xff1493,
+      emissiveIntensity: 0.3,
+      wireframe: true,
+    });
+    const codeBox = new THREE.Mesh(boxGeometry, boxMaterial);
+    scene.add(codeBox);
+    objectsRef.current.papers.push(codeBox);
+  };
+
   const createFrameworkStructure = (scene) => {
     const material = new THREE.LineBasicMaterial({ color: 0x3d3d3d });
 
@@ -488,6 +531,85 @@ const CrisisStage = ({ onComplete }) => {
     });
   };
 
+  const createResearchMethodVisual = (scene) => {
+    // Create interconnected nodes representing case studies
+    const nodePositions = [
+      [-15, 10, 0],
+      [0, 15, 0],
+      [15, 10, 0],
+      [-10, -5, 0],
+      [10, -5, 0],
+      [0, -15, 0],
+    ];
+
+    nodePositions.forEach((pos) => {
+      const geometry = new THREE.SphereGeometry(3, 32, 32);
+      const material = new THREE.MeshPhongMaterial({
+        color: 0x3b82f6,
+        emissive: 0x3b82f6,
+        emissiveIntensity: 0.4,
+      });
+      const node = new THREE.Mesh(geometry, material);
+      node.position.set(...pos);
+      scene.add(node);
+      objectsRef.current.papers.push(node);
+    });
+
+    // Connection lines between nodes
+    const lineMaterial = new THREE.LineBasicMaterial({ color: 0x3b82f6 });
+    for (let i = 0; i < nodePositions.length; i++) {
+      for (let j = i + 1; j < nodePositions.length; j++) {
+        const points = [new THREE.Vector3(...nodePositions[i]), new THREE.Vector3(...nodePositions[j])];
+        const geometry = new THREE.BufferGeometry().setFromPoints(points);
+        const line = new THREE.Line(geometry, lineMaterial);
+        scene.add(line);
+        objectsRef.current.papers.push(line);
+      }
+    }
+  };
+
+  const createHardCodeLiteratureVisual = (scene) => {
+    // Create two bifurcating structures representing the transition
+    const leftGeometry = new THREE.ConeGeometry(8, 20, 32);
+    const leftMaterial = new THREE.MeshPhongMaterial({
+      color: 0x8b5cf6,
+      emissive: 0x8b5cf6,
+      emissiveIntensity: 0.3,
+    });
+    const leftCone = new THREE.Mesh(leftGeometry, leftMaterial);
+    leftCone.position.set(-15, 0, 0);
+    scene.add(leftCone);
+    objectsRef.current.papers.push(leftCone);
+
+    const rightGeometry = new THREE.ConeGeometry(8, 20, 32);
+    const rightMaterial = new THREE.MeshPhongMaterial({
+      color: 0x8b5cf6,
+      emissive: 0x8b5cf6,
+      emissiveIntensity: 0.3,
+    });
+    const rightCone = new THREE.Mesh(rightGeometry, rightMaterial);
+    rightCone.position.set(15, 0, 0);
+    rightCone.rotation.z = Math.PI;
+    scene.add(rightCone);
+    objectsRef.current.papers.push(rightCone);
+
+    // Arrow particles showing transition
+    for (let i = 0; i < 100; i++) {
+      const t = Math.random();
+      const x = -15 + t * 30;
+      const geometry = new THREE.SphereGeometry(0.3, 8, 8);
+      const material = new THREE.MeshPhongMaterial({
+        color: 0x8b5cf6,
+        emissive: 0x8b5cf6,
+        emissiveIntensity: 0.7,
+      });
+      const particle = new THREE.Mesh(geometry, material);
+      particle.position.set(x, Math.sin(t * Math.PI) * 10, 0);
+      scene.add(particle);
+      objectsRef.current.pixels.push(particle);
+    }
+  };
+
   const animateSection = (sectionId) => {
     const time = Date.now() * 0.001;
 
@@ -538,12 +660,25 @@ const CrisisStage = ({ onComplete }) => {
         break;
 
       case 5:
+        objectsRef.current.papers.forEach((box, i) => {
+          if (box.geometry.type === "BoxGeometry") {
+            box.rotation.x = time * 0.5;
+            box.rotation.y = time * 0.3;
+          }
+        });
+        objectsRef.current.pixels.forEach((particle, i) => {
+          particle.position.y += Math.sin(time * 2 + i) * 0.1;
+          particle.position.z += Math.cos(time + i) * 0.05;
+        });
+        break;
+
+      case 6:
         objectsRef.current.pixels.forEach((node, i) => {
           node.scale.setScalar(0.5 + Math.sin(time * 2 + i * 0.1) * 0.5);
         });
         break;
 
-      case 6:
+      case 7:
         objectsRef.current.papers.forEach((box, i) => {
           box.rotation.x = time * 0.5 + i * 0.2;
           box.rotation.y = time * 0.3 + i * 0.2;
@@ -551,7 +686,36 @@ const CrisisStage = ({ onComplete }) => {
         });
         break;
 
-      case 7:
+      case 8:
+        objectsRef.current.papers.forEach((node, i) => {
+          if (node.geometry.type === "SphereGeometry") {
+            node.rotation.x = time * 0.3 + i;
+            node.rotation.y = time * 0.2 + i;
+          }
+        });
+        break;
+
+      case 9:
+        objectsRef.current.papers.forEach((cone, i) => {
+          cone.rotation.z = time * 0.3 + i * Math.PI;
+        });
+        objectsRef.current.pixels.forEach((particle, i) => {
+          particle.scale.setScalar(0.5 + Math.sin(time * 2 + i) * 0.5);
+        });
+        break;
+
+      case 10:
+        objectsRef.current.papers.forEach((obj, i) => {
+          if (obj.geometry.type === "SphereGeometry") {
+            obj.rotation.x = time * 0.3 + i;
+            obj.rotation.y = time * 0.2 + i;
+            obj.scale.x = 1 + Math.sin(time + i) * 0.1;
+            obj.scale.y = 1 + Math.sin(time + i) * 0.1;
+          }
+        });
+        break;
+
+      case 11:
         objectsRef.current.papers.forEach((obj, i) => {
           if (obj.geometry.type === "SphereGeometry") {
             obj.rotation.x = time * 0.3 + i;
@@ -597,7 +761,7 @@ const CrisisStage = ({ onComplete }) => {
     const contents = [
       {
         title: "ابرانگارهٔ مسلط",
-        desc: "برای قرن‌ها، علم‌الادب و پژوهش‌های ادبی بر شالودۀ یک ابرانگارۀ مسلط استوار بوده است",
+        desc: "برای بیش از ده قرن، علم‌الادب و پژوهش‌های ادبی بر شالودۀ یک ابرانگارۀ مسلط استوار بوده است",
         formula: "متن = ابژهٔ ثابت",
         items: [],
         shake: false,
@@ -628,7 +792,19 @@ const CrisisStage = ({ onComplete }) => {
         shake: false,
       },
       {
-        title: "هِیلز و آرست",
+        title: "کُدبیات",
+        desc: "این رساله در وهله نخست واژۀ «کُدبیات» را به‌عنوان بدیل مفهومی دقیق‌تر ادبیات الکترونیک پیشنهاد می‌کند تا ماهیت اجرایی و ذاتاً فناورانۀ این هنر را بهتر بازتاب دهد",
+        formula: "کُد + ادبیات",
+        items: [
+          "کژتابی اصطلاح ادبیات الکترونیک",
+          "تلاش برای واژه‌سازی یک مفهوم، تلاش برای روشن‌سازی فهم",
+          "تخصیص زمینۀ پیدایی (کُد) در واژۀ پیشنهادی",
+          "کمک به جداسازی رستۀ ادبیات الکترونیک از ادبیات مکتوب",
+        ],
+        shake: false,
+      },
+      {
+        title: "تلفیق هیلز و آرست",
         desc: "این رساله با ترکیب بینش هستی‌شناختی کاترین هیلز و روش پدیدارشناختی اسپن آرست، یک چارچوب تحلیلی دووجهی را تدوین می‌کند",
         formula: "هیلز ⟷ آرست",
         items: ["پساانسان‌گرایی انتقادی", "ادبیات سخت‌پیما", "مادیت رسانه", "مادیت اجرایی", "سایبرمتن"],
@@ -636,7 +812,7 @@ const CrisisStage = ({ onComplete }) => {
       },
       {
         title: "زیبایی‌شناسی رایانشی",
-        desc: " سازمان‌دهی شگردهای بیانی کدبیات در پنج دستۀ کارکردی",
+        desc: "سازمان‌دهی شگردهای بیانی کدبیات در پنج دستۀ کارکردی",
         formula: "⸎",
         items: [
           "شگردهای رابط کاربری",
@@ -652,11 +828,18 @@ const CrisisStage = ({ onComplete }) => {
         desc: "عمده‌‌دست‌آوردهای این رساله عبارت‌اند از",
         formula: "✓",
         items: [
-          "تدوین چارچوبی مفهومی از ادبیات الکترونیک برپایۀ سنتز نظری و بازخوانی تلفیقی آراء هیلز در حوزه‌های مختلف (انسان‌شناسی، ابزارشناسی، رسانه‌شناسی، ادبیات‌شناسی)",
+          "تدوین چارچوبی مفهومی از ادبیات الکترونیک برپایۀ سنتز نظری و بازخوانی تلفیقی آراء هیلز در حوزه‌های مختلف",
           "تدوین شگردهای بیانی کدبیات (زیبایی‌شناسی رایانشی) با تکیه‌بر چارچوب مفهومی رساله و نظریۀ ادبیات سخت‌پیمای آرست",
-          " ارائۀ طبقه‌بندی نوینی از گونه‌ها براساس استعارۀ کارکردی متن (معیاری درون‌رشته‌ای)",
+          "ارائۀ طبقه‌بندی نوینی از گونه‌ها براساس استعارۀ کارکردی متن (معیاری درون‌رشته‌ای)",
           "واکاوی نظام‌مند آثار کدبی فارسی با تکیه‌بر جعبه‌ابزار تحلیلی رساله",
         ],
+        shake: false,
+      },
+      {
+        title: "روش تحقیق",
+        desc: "روش‌شناسی این پژوهش یک تحلیل کیفی مبتنی بر مطالعۀ موردی است که بر روی نمونه‌های شاخص از کُدبیات فارسی تمرکز می‌کند",
+        formula: "مطالعۀ موردی ← تحلیل کیفی",
+        items: ["نمونه‌های شاخص و عمیق", "سیستم اجرایی نه متن صرف", "کالبدشکافی تفصیلی", "آزمون چارچوب نظری"],
         shake: false,
       },
       {
@@ -665,6 +848,13 @@ const CrisisStage = ({ onComplete }) => {
         formula: "حنجره ← کاغذ ← پیکسل",
         items: ["بدن گذرا و شفاهی", "بدن ایستا و مکتوب", "بدن پویا و اجرایی"],
         shake: false,
+      },
+      {
+        title: "ادبیات سخت‌پیما",
+        desc: "نظریۀ «ادبیات سخت‌پیما» یا «سایبرمتن» اسپن آرست بر کنش پیمایشی کاربر تمرکز دارد",
+        formula: "متن چیست؟ ← متن چگونه به عمل می‌آید؟",
+        items: ["کنش پیمایشی فعال", "منطق الگوریتمیک", "لذا در فرایند نه معنا", "خواننده ← کنشگر"],
+        shake: true,
       },
     ];
 
@@ -783,26 +973,6 @@ const CrisisStage = ({ onComplete }) => {
             title={section.name}
           />
         ))}
-      </div>
-
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
-        <div
-          className="flex items-center gap-4 px-6 py-3 rounded-full backdrop-blur-sm"
-          style={{ background: "rgba(0, 0, 0, 0.5)" }}
-        >
-          <div className="text-cyan-400 font-bold">
-            {currentSection + 1} / {sections.length}
-          </div>
-          <div className="w-48 h-2 bg-gray-800 rounded-full overflow-hidden">
-            <div
-              className="h-full transition-all duration-500"
-              style={{
-                width: `${((currentSection + 1) / sections.length) * 100}%`,
-                background: `linear-gradient(90deg, #f59e0b, #06b6d4, #9333ea)`,
-              }}
-            />
-          </div>
-        </div>
       </div>
 
       {currentSection < sections.length - 1 && (

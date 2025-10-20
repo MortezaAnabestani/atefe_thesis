@@ -98,7 +98,12 @@ const WorksGallery = ({ onComplete }) => {
       analysis: "مرز میان بدن فیزیکی و جهان متن محو می‌شود. خواندن تبدیل به یک تجربهٔ بدن‌مند می‌شود.",
       color: "#A8E6CF",
       motionType: "author",
-      images: ["/assets/images/works/vr.jpg"],
+      images: [
+        "assets/images/works/vr.jpg",
+        "assets/images/works/vr2.png",
+        "assets/images/works/vr3.png",
+        "assets/images/works/vr4.png",
+      ],
     },
     {
       id: "kamal",

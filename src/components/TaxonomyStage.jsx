@@ -1,7 +1,3 @@
-// ========================================
-// Stage 3: Taxonomy with enhanced stars
-// ========================================
-
 import { useState, useEffect } from "react";
 
 const TaxonomyStage = ({ onComplete }) => {
@@ -14,7 +10,7 @@ const TaxonomyStage = ({ onComplete }) => {
       setScrollProgress((prev) => {
         const newProgress = Math.min(prev + e.deltaY * 0.0003, 1);
         if (newProgress === 1) {
-          setTimeout(() => onComplete(), 1500);
+          setTimeout(() => onComplete?.(), 1500);
         }
         return newProgress;
       });
@@ -162,47 +158,92 @@ const TaxonomyStage = ({ onComplete }) => {
         ))}
       </div>
 
-      <div className="absolute top-8 left-8 group/tools">
+      <div className="absolute top-8 left-1/2 -translate-x-1/2 flex gap-4 items-center">
         <button
-          onClick={() => setShowTools(!showTools)}
-          className="relative text-cyan-400 font-light text-sm tracking-widest hover:tracking-normal transition-all"
+          onClick={() =>
+            setSelectedGenre(selectedGenre?.id === "codebias-def" ? null : { id: "codebias-def" })
+          }
+          className="relative px-4 py-2 text-purple-400 font-light text-sm tracking-widest hover:tracking-normal transition-all rounded"
           style={{
-            textShadow: "0 0 20px rgba(0, 245, 212, 0.4), 0 0 40px rgba(0, 245, 212, 0.1)",
-            letterSpacing: "4px",
-            animation: showTools ? "none" : "float 3s ease-in-out infinite",
+            textShadow: "0 0 20px rgba(192, 132, 250, 0.4)",
+            letterSpacing: "3px",
+            background: "rgba(192, 132, 250, 0.1)",
+            border: "1px solid rgba(192, 132, 250, 0.3)",
+            boxShadow: "0 0 20px rgba(192, 132, 250, 0.15)",
           }}
         >
-          <style>{`
-            @keyframes float {
-              0%, 100% { transform: translateY(0px); }
-              50% { transform: translateY(-8px); }
-            }
-            @keyframes glitchSkew {
-              0% { transform: skewX(-2deg); }
-              50% { transform: skewX(2deg); }
-              100% { transform: skewX(-2deg); }
-            }
-          `}</style>
-          جعبه ابزار
+          تعریف کدبیات
           <span
-            className="inline-block ml-3"
-            style={{
-              opacity: showTools ? 1 : 0.5,
-              animation: showTools ? "glitchSkew 0.2s" : "none",
-            }}
+            className="inline-block ml-2"
+            style={{ opacity: selectedGenre?.id === "codebias-def" ? 1 : 0.6 }}
           >
-            {showTools ? "✕" : "◇"}
+            {selectedGenre?.id === "codebias-def" ? "▼" : "▲"}
           </span>
         </button>
 
-        {showTools && (
+        <button
+          onClick={() => setShowTools(!showTools)}
+          className="relative px-4 py-2 text-cyan-400 font-light text-sm tracking-widest hover:tracking-normal transition-all rounded"
+          style={{
+            textShadow: "0 0 20px rgba(0, 245, 212, 0.4)",
+            letterSpacing: "3px",
+            background: "rgba(0, 245, 212, 0.1)",
+            border: "1px solid rgba(0, 245, 212, 0.3)",
+            boxShadow: "0 0 20px rgba(0, 245, 212, 0.15)",
+          }}
+        >
+          جعبه ابزار
+          <span
+            className="inline-block ml-2"
+            style={{
+              opacity: showTools ? 1 : 0.6,
+            }}
+          >
+            {showTools ? "▼" : "▲"}
+          </span>
+        </button>
+
+        <button
+          onClick={() => setSelectedGenre(selectedGenre?.id === "ai-context" ? null : { id: "ai-context" })}
+          className="relative px-4 py-2 text-amber-500 font-light text-sm tracking-widest hover:tracking-normal transition-all rounded"
+          style={{
+            textShadow: "0 0 20px rgba(255, 157, 92, 0.4)",
+            letterSpacing: "3px",
+            background: "rgba(255, 157, 92, 0.1)",
+            border: "1px solid rgba(255, 157, 92, 0.3)",
+            boxShadow: "0 0 20px rgba(255, 157, 92, 0.15)",
+          }}
+        >
+          هوش مصنوعی
+          <span
+            className="inline-block ml-2"
+            style={{ opacity: selectedGenre?.id === "ai-context" ? 1 : 0.6 }}
+          >
+            {selectedGenre?.id === "ai-context" ? "▼" : "▲"}
+          </span>
+        </button>
+      </div>
+
+      {showTools && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          onClick={() => setShowTools(false)}
+        >
           <div
-            className="absolute top-6 left-0 mt-4 z-10 p-6 rounded-none w-screen max-w-screen-md"
+            className="absolute inset-0"
+            style={{
+              background: "rgba(0, 0, 0, 0.4)",
+              backdropFilter: "blur(8px)",
+            }}
+          />
+          <div
+            className="relative z-10 max-w-2xl w-full p-8 rounded-lg max-h-96 overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
             style={{
               background: `
                 radial-gradient(circle at 20% 50%, rgba(0, 245, 212, 0.08) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(0, 136, 255, 0.06) 0%, transparent 50%),
-                rgba(0, 15, 30, 0.85)
+                rgba(0, 15, 30, 0.9)
               `,
               border: "1px solid rgba(0, 245, 212, 0.2)",
               boxShadow: `
@@ -210,8 +251,7 @@ const TaxonomyStage = ({ onComplete }) => {
                 inset 0 0 60px rgba(0, 245, 212, 0.03),
                 0 0 80px rgba(0, 136, 255, 0.08)
               `,
-              backdropFilter: "blur(10px)",
-              minWidth: "320px",
+              backdropFilter: "blur(15px)",
             }}
           >
             <div className="mb-6">
@@ -294,37 +334,130 @@ const TaxonomyStage = ({ onComplete }) => {
               </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
-      <div className="absolute bottom-8 right-8 group/ai w-screen min-w-screen max-w-screen-xl">
-        <button
-          onClick={() => setSelectedGenre(selectedGenre?.id === "ai-context" ? null : { id: "ai-context" })}
-          className="relative text-amber-500 font-light text-sm tracking-widest hover:tracking-normal transition-all"
-          style={{
-            textShadow: "0 0 25px rgba(255, 157, 92, 0.5), 0 0 50px rgba(255, 107, 53, 0.15)",
-            letterSpacing: "4px",
-            animation: selectedGenre?.id === "ai-context" ? "none" : "pulse 4s ease-in-out infinite",
-          }}
+      {selectedGenre?.id === "codebias-def" && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedGenre(null)}
         >
-          <style>{`
-            @keyframes pulse {
-              0%, 100% { opacity: 0.8; }
-              50% { opacity: 1; }
-            }
-          `}</style>
-          کدبیات در عصر هوش مصنوعی
-          <span
-            className="inline-block ml-3"
-            style={{ opacity: selectedGenre?.id === "ai-context" ? 1 : 0.6 }}
-          >
-            {selectedGenre?.id === "ai-context" ? "▼" : "▲"}
-          </span>
-        </button>
-
-        {selectedGenre?.id === "ai-context" && (
           <div
-            className="absolute bottom-4 right-0 mb-4 p-6 rounded-none"
+            className="absolute inset-0"
+            style={{
+              background: "rgba(0, 0, 0, 0.4)",
+              backdropFilter: "blur(8px)",
+            }}
+          />
+          <div
+            className="relative z-10 max-w-3xl w-full p-8 rounded-lg max-h-96 overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: `
+                radial-gradient(circle at 30% 30%, rgba(168, 230, 207, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(0, 245, 212, 0.08) 0%, transparent 50%),
+                rgba(5, 30, 30, 0.9)
+              `,
+              border: "1px solid rgba(0, 245, 212, 0.25)",
+              boxShadow: `
+                0 0 50px rgba(0, 245, 212, 0.2),
+                inset 0 0 80px rgba(0, 245, 212, 0.05),
+                0 0 100px rgba(0, 245, 212, 0.1)
+              `,
+              backdropFilter: "blur(15px)",
+            }}
+          >
+            <div className="mb-6">
+              <div
+                className="text-green-600 text-xs mb-4 tracking-widest"
+                style={{
+                  textShadow: "0 0 20px rgba(0, 245, 212, 0.6)",
+                  letterSpacing: "3px",
+                }}
+              >
+                ◆ تعریف  ◆
+              </div>
+              <h3
+                className="text-lg text-cyan-300 mb-5"
+                style={{
+                  textShadow: "0 0 15px rgba(0, 245, 212, 0.3)",
+                  lineHeight: "2",
+                }}
+              >
+                کدبیات آن نوع ادبیاتی است که:
+              </h3>
+            </div>
+
+            <div className="space-y-4 mb-6">
+              {[
+                {
+                  icon: "●",
+                  text: "بدون زمینۀ محاسباتی و رایانشی امکان تکوین، نمایش و تجربه ندارد،",
+                },
+                {
+                  icon: "●",
+                  text: "با چاپ‌شدن، برخی ویژگی‌های هویت‌بخش خود را از دست می‌دهد،",
+                },
+                {
+                  icon: "●",
+                  text: "تعاملی و متکی‌بر رابط‌های کاربری دیجیتال است،",
+                },
+                {
+                  icon: "●",
+                  text: "سخت‌پیماست و پیمایش اثر، بخشی از تجربۀ ادبی‌ست،",
+                },
+                {
+                  icon: "●",
+                  text: "معمولاً چندرسانه‌ای است و سایر رسانه‌ها در خدمت رسانۀ کلام یا قصدی ادبی پیکربندی می‌شوند",
+                },
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  className="relative pl-6 py-2 transition-all hover:pl-8 group/item"
+                  style={{
+                    borderLeft: `2px solid rgba(0, 245, 212, ${0.3 + i * 0.12})`,
+                    background: "rgba(0, 245, 212, 0.03)",
+                  }}
+                >
+                  <div
+                    className="text-cyan-400 text-sm group-hover/item:text-cyan-200 transition-colors leading-relaxed"
+                    style={{
+                      textShadow: "0 0 10px rgba(0, 245, 212, 0.2)",
+                    }}
+                  >
+                    <span className="text-green-500 ml-2">{item.icon}</span>
+                    {item.text}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+
+            <button
+              onClick={() => setSelectedGenre(null)}
+              className="text-green-700 hover:text-green-600 text-xs transition-colors mt-4 font-bold"
+            >
+              [بستن]
+            </button>
+          </div>
+        </div>
+      )}
+
+      {selectedGenre?.id === "ai-context" && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedGenre(null)}
+        >
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "rgba(0, 0, 0, 0.4)",
+              backdropFilter: "blur(8px)",
+            }}
+          />
+          <div
+            className="relative z-10 max-w-2xl w-full p-8 rounded-lg max-h-96 overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
             style={{
               background: `
                 radial-gradient(circle at 30% 30%, rgba(255, 157, 92, 0.1) 0%, transparent 50%),
@@ -413,8 +546,8 @@ const TaxonomyStage = ({ onComplete }) => {
               [بستن]
             </button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {selectedGenre && selectedGenre.example && (
         <div
