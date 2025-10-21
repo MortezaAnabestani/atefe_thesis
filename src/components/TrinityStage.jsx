@@ -1,7 +1,3 @@
-// ========================================
-// Stage 2: Trinity
-// ========================================
-
 import { useState, useEffect, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
@@ -37,17 +33,14 @@ const TextCharacterInBox = ({ char, index, totalChars, isActive, parentPos }) =>
     canvas.height = 256;
     const context = canvas.getContext("2d");
 
-    // پس زمینه شفاف
     context.clearRect(0, 0, 256, 256);
 
-    // حرف روشن و درخشان
     context.fillStyle = "#00F5D4";
     context.font = "bold 200px Arial";
     context.textAlign = "center";
     context.textBaseline = "middle";
     context.fillText(char, 128, 128);
 
-    // سایه‌ی درخشان
     context.strokeStyle = "rgba(0, 245, 212, 0.6)";
     context.lineWidth = 3;
     context.strokeText(char, 128, 128);
@@ -57,13 +50,11 @@ const TextCharacterInBox = ({ char, index, totalChars, isActive, parentPos }) =>
 
   return (
     <group ref={groupRef}>
-      {/* حرف درخشان */}
       <mesh ref={textMeshRef} position={[0, 0, 0]}>
         <planeGeometry args={[0.25, 0.25]} />
         <meshBasicMaterial map={createCharacterTexture()} transparent={true} toneMapped={false} />
       </mesh>
 
-      {/* هاله درخشان اطراف حرف */}
       {isActive && (
         <mesh position={[0, 0, -0.02]}>
           <circleGeometry args={[0.15, 32]} />
@@ -71,7 +62,6 @@ const TextCharacterInBox = ({ char, index, totalChars, isActive, parentPos }) =>
         </mesh>
       )}
 
-      {/* ذرات درخشان اطراف */}
       {isActive && (
         <points position={[0, 0, 0]}>
           <bufferGeometry>
@@ -136,7 +126,6 @@ const ShapeNodeWithText = ({ type, isActive, position, onClick, relatedChars }) 
 
   return (
     <group>
-      {/* مکعب اصلی */}
       <mesh
         ref={meshRef}
         position={position}
@@ -156,7 +145,6 @@ const ShapeNodeWithText = ({ type, isActive, position, onClick, relatedChars }) 
         />
       </mesh>
 
-      {/* لایهٔ بیرونی wireframe */}
       {isActive && (
         <mesh ref={outerRef} position={position} scale={1.35}>
           {geometries[type]()}
@@ -171,7 +159,6 @@ const ShapeNodeWithText = ({ type, isActive, position, onClick, relatedChars }) 
         </mesh>
       )}
 
-      {/* حروف و شکل‌های شناور */}
       {isActive &&
         relatedChars &&
         relatedChars.map((char, i) => (
@@ -278,50 +265,25 @@ const TrinityStage = ({ onComplete }) => {
 
       {selectedInfo !== null && (
         <>
-          <div className="mb-6">
-            <div className="text-cyan-400 text-xs font-bold tracking-widest mb-2">
-              {shapes[selectedInfo].name}
-            </div>
-            <h3 className="text-2xl text-white mb-6">{shapes[selectedInfo].name}</h3>
-          </div>
-          <div className="absolute bottom-20 z-50 left-1/2 -translate-x-1/2 p-8 bg-black/10 border-2 border-cyan-400 max-w-2xl rounded-lg backdrop-blur">
-            <div className="grid grid-cols-2 gap-8 mb-6">
+          <div className="absolute bottom-16 z-50 left-1/2 -translate-x-1/2 p-12 bg-black/20 border-2 border-cyan-400 max-w-5xl rounded-lg backdrop-blur-md">
+            <div className="grid grid-cols-2 gap-12 mb-8">
               <div>
-                <div className="text-gray-400 text-xs mb-2 font-bold">ادبیات مکتوب</div>
-                <p className="text-gray-300 text-sm leading-relaxed">{shapes[selectedInfo].oldDesc}</p>
+                <div className="text-gray-400 text-base mb-4 font-bold">ادبیات مکتوب</div>
+                <p className="text-gray-300 text-2xl leading-relaxed">{shapes[selectedInfo].oldDesc}</p>
               </div>
               <div>
-                <div className="text-cyan-400 text-xs mb-2 font-bold">کُدَبیات</div>
-                <p className="text-cyan-200 text-sm leading-relaxed">{shapes[selectedInfo].newDesc}</p>
+                <div className="text-cyan-400 text-base mb-4 font-bold">کُدَبیات</div>
+                <p className="text-cyan-200 text-2xl leading-relaxed">{shapes[selectedInfo].newDesc}</p>
               </div>
             </div>
 
-            <div className="mb-4 p-4 bg-cyan-400/10 border-r-2 border-cyan-400">
-              <p className="text-cyan-300 text-sm leading-relaxed">{shapes[selectedInfo].details}</p>
-            </div>
-
-            <div className="mb-6 p-4 bg-gray-900/50 border border-gray-700 rounded">
-              <p className="text-gray-400 text-xs mb-3 font-bold">🔍 توضیح تعاملی:</p>
-              <p className="text-gray-300 text-xs leading-relaxed">
-                {selectedInfo === 0 &&
-                  "روی مکعب کلیک کنید تا حروف درون آن شناور شوند. چنین متنی را چگونه می‌توان چاپ کرد؟"}
-                {selectedInfo === 1 &&
-                  "حروف در شکل بر پایۀ احتمالاتی که نویسنده در بنلادمتن پی‌رریزی کرده جابه‌جا می‌شوند"}
-                {selectedInfo === 2 &&
-                  "مخاطب با کلیک روی مکعب‌ها، باعث نمایش حروف می‌شود. انتخاب یا عدم انتخاب او، کیفیات حیات متن را شکل می‌دهد"}
-              </p>
-            </div>
-
-            <div className="mb-6 p-3 bg-amber-900/20 border-r-2 border-amber-600">
-              <p className="text-amber-100 text-xs">
-                💡 حروف‌های شناور را ببینید؟ آن‌ها درون فضایی محاسباتی محبوس‌اند، اما ثابت نیستند. مانند معنا
-                در کُدبیات — زنده، مهندسی‌شده و متغیر.
-              </p>
+            <div className="mb-6 p-6 bg-cyan-400/10 border-r-4 border-cyan-400">
+              <p className="text-cyan-300 text-2xl leading-relaxed">{shapes[selectedInfo].details}</p>
             </div>
 
             <button
               onClick={() => setSelectedInfo(null)}
-              className="text-gray-500 hover:text-cyan-400 text-sm transition-colors"
+              className="text-gray-400 hover:text-cyan-400 text-xl transition-colors font-bold"
             >
               بستن [ESC]
             </button>
@@ -329,12 +291,12 @@ const TrinityStage = ({ onComplete }) => {
         </>
       )}
 
-      <div className="absolute top-20 left-1/2 -translate-x-1/2 flex gap-4">
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 flex gap-6">
         {shapes.map((shape, i) => (
           <button
             key={i}
             onClick={() => setSelectedInfo(selectedInfo === i ? null : i)}
-            className="px-6 py-3 border border-cyan-400/50 hover:border-cyan-400 hover:bg-cyan-400/10 transition-all text-sm font-bold text-cyan-400"
+            className="px-8 py-4 border border-cyan-400/50 hover:border-cyan-400 hover:bg-cyan-400/10 transition-all text-2xl font-bold text-cyan-400 rounded"
           >
             {shape.name}
           </button>
@@ -342,7 +304,7 @@ const TrinityStage = ({ onComplete }) => {
       </div>
 
       {scrollProgress < 0.9 && (
-        <div className="absolute top-8 right-8 text-gray-500 text-xs font-bold animate-pulse">
+        <div className="absolute top-8 right-12 text-gray-500 text-2xl font-bold animate-pulse">
           [{Math.round(scrollProgress * 100)}%] اسکرول کنید برای ادامه
         </div>
       )}

@@ -31,7 +31,6 @@ const CrisisStage = ({ onComplete }) => {
     { id: 11, name: "یک ادبیات و سه بدن", color: 0xd4a574 },
   ];
 
-  // Helper function to create text sprite
   const createTextSprite = (text, color) => {
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
@@ -59,7 +58,6 @@ const CrisisStage = ({ onComplete }) => {
     return sprite;
   };
 
-  // Create binary code stars
   const createBinaryCodeStars = (scene) => {
     const bytesCodes = [
       "01010101",
@@ -182,13 +180,11 @@ const CrisisStage = ({ onComplete }) => {
     const animate = () => {
       animationId = requestAnimationFrame(animate);
 
-      // Animate binary stars
       objectsRef.current.binaryStars.forEach((star) => {
         star.position.x += star.userData.vx;
         star.position.y += star.userData.vy;
         star.position.z += star.userData.vz;
 
-        // Wrap around
         if (Math.abs(star.position.x) > 120) star.userData.vx *= -1;
         if (Math.abs(star.position.y) > 120) star.userData.vy *= -1;
         if (Math.abs(star.position.z) > 120) star.userData.vz *= -1;
@@ -319,7 +315,6 @@ const CrisisStage = ({ onComplete }) => {
       objectsRef.current.papers.push(sprite);
     });
 
-    // Connection lines
     const material = new THREE.LineBasicMaterial({ color: 0x888888 });
     const points = [new THREE.Vector3(-15, 0, 0), new THREE.Vector3(15, 0, 0)];
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
@@ -421,7 +416,6 @@ const CrisisStage = ({ onComplete }) => {
     scene.add(rightSphere);
     objectsRef.current.papers.push(rightSphere);
 
-    // Connection particles
     for (let i = 0; i < 50; i++) {
       const x = -15 + (i / 50) * 30;
       const y = Math.sin(i * 0.5) * 5;
@@ -439,12 +433,10 @@ const CrisisStage = ({ onComplete }) => {
   };
 
   const createCodeLiteratureVisual = (scene) => {
-    // Create particles made of visible code characters
     const codeChars = ["0", "1", "{", "}", "[", "]", "(", ")", "=", ">", "<", "~"];
     const geometry = new THREE.SphereGeometry(0.4, 8, 8);
 
     for (let i = 0; i < 150; i++) {
-      const char = codeChars[Math.floor(Math.random() * codeChars.length)];
       const material = new THREE.MeshPhongMaterial({
         color: 0xff1493,
         emissive: 0xff1493,
@@ -460,7 +452,6 @@ const CrisisStage = ({ onComplete }) => {
       objectsRef.current.pixels.push(particle);
     }
 
-    // Create a large code structure in center
     const boxGeometry = new THREE.BoxGeometry(15, 20, 2);
     const boxMaterial = new THREE.MeshPhongMaterial({
       color: 0xff1493,
@@ -532,7 +523,6 @@ const CrisisStage = ({ onComplete }) => {
   };
 
   const createResearchMethodVisual = (scene) => {
-    // Create interconnected nodes representing case studies
     const nodePositions = [
       [-15, 10, 0],
       [0, 15, 0],
@@ -555,7 +545,6 @@ const CrisisStage = ({ onComplete }) => {
       objectsRef.current.papers.push(node);
     });
 
-    // Connection lines between nodes
     const lineMaterial = new THREE.LineBasicMaterial({ color: 0x3b82f6 });
     for (let i = 0; i < nodePositions.length; i++) {
       for (let j = i + 1; j < nodePositions.length; j++) {
@@ -569,7 +558,6 @@ const CrisisStage = ({ onComplete }) => {
   };
 
   const createHardCodeLiteratureVisual = (scene) => {
-    // Create two bifurcating structures representing the transition
     const leftGeometry = new THREE.ConeGeometry(8, 20, 32);
     const leftMaterial = new THREE.MeshPhongMaterial({
       color: 0x8b5cf6,
@@ -593,7 +581,6 @@ const CrisisStage = ({ onComplete }) => {
     scene.add(rightCone);
     objectsRef.current.papers.push(rightCone);
 
-    // Arrow particles showing transition
     for (let i = 0; i < 100; i++) {
       const t = Math.random();
       const x = -15 + t * 30;
@@ -714,17 +701,6 @@ const CrisisStage = ({ onComplete }) => {
           }
         });
         break;
-
-      case 11:
-        objectsRef.current.papers.forEach((obj, i) => {
-          if (obj.geometry.type === "SphereGeometry") {
-            obj.rotation.x = time * 0.3 + i;
-            obj.rotation.y = time * 0.2 + i;
-            obj.scale.x = 1 + Math.sin(time + i) * 0.1;
-            obj.scale.y = 1 + Math.sin(time + i) * 0.1;
-          }
-        });
-        break;
     }
   };
 
@@ -782,19 +758,17 @@ const CrisisStage = ({ onComplete }) => {
       },
       {
         title: "سؤالات تحقیق",
-        desc: "هدف اصلی این پژوهش صورت‌بندی یک چارچوب تحلیلی منسجم از زیست‌بوم نوظهور ادبیات الکترونیک در زبان فارسی است",
-        formula: `تغییر سکو از کاغذ به پیکسل، دقیقاً چه دگرگونی‌هایی در مفاهیم بنیادین «مؤلف»، «متن» و «خواننده» ایجاد می‌کند؟
-        
-         با توجه به ماهیت سیال و بینارشته‌ای این حوزه، چگونه می‌توان به یک تعریف کارآمد و یک طبقه‌بندی معنادار از گونه‌های مختلف ادبیات الکترونیک دست یافت؟
-        
-         تجربه‌های بومی در زبان فارسی را با چه ابزارهایی می‌توان به صورت عمیق و انتقادی واکاوی کرد؟`,
-        items: ["دگرگونی مفاهیم", "تعریف و طبقه‌بندی", "تجربه‌های بومی"],
+        desc: "",
+        formula: ` * تغییر سکو از کاغذ به پیکسل، دقیقاً چه دگرگونی‌هایی در مفاهیم بنیادین «مؤلف»، «متن» و «خواننده» ایجاد می‌کند؟
+                 * با توجه به ماهیت سیال و بینارشته‌ای این حوزه، چگونه می‌توان به یک تعریف کارآمد و یک طبقه‌بندی معنادار از گونه‌های مختلف ادبیات الکترونیک دست یافت؟
+                 * تجربه‌های بومی در زبان فارسی را با چه ابزارهایی می‌توان به صورت عمیق و انتقادی واکاوی کرد؟`,
+        items: ["صورت‌بندی مفاهیم", "تعریف و طبقه‌بندی", "تجربه‌های بومی"],
         shake: false,
       },
       {
-        title: "کُدبیات",
-        desc: "این رساله در وهله نخست واژۀ «کُدبیات» را به‌عنوان بدیل مفهومی دقیق‌تر ادبیات الکترونیک پیشنهاد می‌کند تا ماهیت اجرایی و ذاتاً فناورانۀ این هنر را بهتر بازتاب دهد",
-        formula: "کُد + ادبیات",
+        title: "",
+        desc: "",
+        formula: "کُد + ادبیات = کُدبیات",
         items: [
           "کژتابی اصطلاح ادبیات الکترونیک",
           "تلاش برای واژه‌سازی یک مفهوم، تلاش برای روشن‌سازی فهم",
@@ -804,7 +778,7 @@ const CrisisStage = ({ onComplete }) => {
         shake: false,
       },
       {
-        title: "تلفیق هیلز و آرست",
+        title: "هیلز و آرست",
         desc: "این رساله با ترکیب بینش هستی‌شناختی کاترین هیلز و روش پدیدارشناختی اسپن آرست، یک چارچوب تحلیلی دووجهی را تدوین می‌کند",
         formula: "هیلز ⟷ آرست",
         items: ["پساانسان‌گرایی انتقادی", "ادبیات سخت‌پیما", "مادیت رسانه", "مادیت اجرایی", "سایبرمتن"],
@@ -813,7 +787,7 @@ const CrisisStage = ({ onComplete }) => {
       {
         title: "زیبایی‌شناسی رایانشی",
         desc: "سازمان‌دهی شگردهای بیانی کدبیات در پنج دستۀ کارکردی",
-        formula: "⸎",
+        formula: null,
         items: [
           "شگردهای رابط کاربری",
           "شگردهای طراحی فضایی",
@@ -825,12 +799,12 @@ const CrisisStage = ({ onComplete }) => {
       },
       {
         title: "دستاوردها",
-        desc: "عمده‌‌دست‌آوردهای این رساله عبارت‌اند از",
-        formula: "✓",
+        desc: "",
+        formula: null,
         items: [
-          "تدوین چارچوبی مفهومی از ادبیات الکترونیک برپایۀ سنتز نظری و بازخوانی تلفیقی آراء هیلز در حوزه‌های مختلف",
+          "تدوین چارچوبی مفهومی از ادبیات الکترونیک برپایۀ سنتز نظری و بازخوانی تلفیقی آراء پراکندۀ هیلز",
           "تدوین شگردهای بیانی کدبیات (زیبایی‌شناسی رایانشی) با تکیه‌بر چارچوب مفهومی رساله و نظریۀ ادبیات سخت‌پیمای آرست",
-          "ارائۀ طبقه‌بندی نوینی از گونه‌ها براساس استعارۀ کارکردی متن (معیاری درون‌رشته‌ای)",
+          "ارائۀ طبقه‌بندی نوین از گونه‌ها براساس استعارۀ کارکردی متن (معیاری درون‌رشته‌ای)",
           "واکاوی نظام‌مند آثار کدبی فارسی با تکیه‌بر جعبه‌ابزار تحلیلی رساله",
         ],
         shake: false,
@@ -839,7 +813,7 @@ const CrisisStage = ({ onComplete }) => {
         title: "روش تحقیق",
         desc: "روش‌شناسی این پژوهش یک تحلیل کیفی مبتنی بر مطالعۀ موردی است که بر روی نمونه‌های شاخص از کُدبیات فارسی تمرکز می‌کند",
         formula: "مطالعۀ موردی ← تحلیل کیفی",
-        items: ["نمونه‌های شاخص و عمیق", "سیستم اجرایی نه متن صرف", "کالبدشکافی تفصیلی", "آزمون چارچوب نظری"],
+        items: [],
         shake: false,
       },
       {
@@ -851,8 +825,8 @@ const CrisisStage = ({ onComplete }) => {
       },
       {
         title: "ادبیات سخت‌پیما",
-        desc: "نظریۀ «ادبیات سخت‌پیما» یا «سایبرمتن» اسپن آرست بر کنش پیمایشی کاربر تمرکز دارد",
-        formula: "متن چیست؟ ← متن چگونه به عمل می‌آید؟",
+        desc: "سایبرمتن و اسپن آرست",
+        formula: "متن چیست؟ ← متن چگونه به‌عمل می‌آید؟",
         items: ["کنش پیمایشی فعال", "منطق الگوریتمیک", "لذا در فرایند نه معنا", "خواننده ← کنشگر"],
         shake: true,
       },
@@ -895,12 +869,37 @@ const CrisisStage = ({ onComplete }) => {
       <div ref={mountRef} className="absolute inset-0" />
 
       <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-        <div className="max-w-4xl w-full px-8 text-center">
+        <div
+          className="max-w-6xl w-full px-12 py-16 text-center rounded-3xl backdrop-blur-sm"
+          style={{
+            background: `rgba(${parseInt(
+              sections[currentSection].color.toString(16).slice(0, 2),
+              16
+            )}, ${parseInt(sections[currentSection].color.toString(16).slice(2, 4), 16)}, ${parseInt(
+              sections[currentSection].color.toString(16).slice(4, 6),
+              16
+            )}, 0.1)`,
+            border: `2px solid rgba(${parseInt(
+              sections[currentSection].color.toString(16).slice(0, 2),
+              16
+            )}, ${parseInt(sections[currentSection].color.toString(16).slice(2, 4), 16)}, ${parseInt(
+              sections[currentSection].color.toString(16).slice(4, 6),
+              16
+            )}, 0.3)`,
+            boxShadow: `0 8px 32px 0 rgba(${parseInt(
+              sections[currentSection].color.toString(16).slice(0, 2),
+              16
+            )}, ${parseInt(sections[currentSection].color.toString(16).slice(2, 4), 16)}, ${parseInt(
+              sections[currentSection].color.toString(16).slice(4, 6),
+              16
+            )}, 0.1)`,
+          }}
+        >
           <h1
-            className="text-6xl md:text-8xl font-bold mb-6 fade-in"
+            className="text-7xl md:text-8xl font-bold mb-8 fade-in"
             style={{
               color: `#${sections[currentSection].color.toString(16)}`,
-              textShadow: `0 0 30px #${sections[currentSection].color.toString(16)}`,
+              textShadow: `0 0 40px #${sections[currentSection].color.toString(16)}`,
               animationDelay: "0.1s",
               opacity: 0,
             }}
@@ -909,62 +908,63 @@ const CrisisStage = ({ onComplete }) => {
           </h1>
 
           <p
-            className="text-2xl md:text-3xl text-gray-300 mb-8 fade-in"
+            className={`text-3xl md:text-3xl text-gray-200 mb-10 fade-in leading-relaxed `}
             style={{ animationDelay: "0.3s", opacity: 0 }}
           >
             {content.desc}
           </p>
-
-          <div
-            className="inline-block px-8 py-4 rounded-2xl mb-12 fade-in"
-            style={{
-              background: `rgba(${parseInt(
-                sections[currentSection].color.toString(16).slice(0, 2),
-                16
-              )}, ${parseInt(sections[currentSection].color.toString(16).slice(2, 4), 16)}, ${parseInt(
-                sections[currentSection].color.toString(16).slice(4, 6),
-                16
-              )}, 0.2)`,
-              border: `2px solid #${sections[currentSection].color.toString(16)}`,
-              animationDelay: "0.5s",
-              opacity: 0,
-            }}
-          >
+          {content.formula !== null && (
             <div
-              className={`text-4xl font-bold text-white text-justify ${content.shake && "glitch"} rtl ${
-                content.title === "سؤالات تحقیق" && " text-xl"
-              }`}
-              style={{ whiteSpace: "pre-line" }}
+              className="inline-block px-10 py-6 rounded-2xl mb-14 fade-in"
+              style={{
+                background: `rgba(${parseInt(
+                  sections[currentSection].color.toString(16).slice(0, 2),
+                  16
+                )}, ${parseInt(sections[currentSection].color.toString(16).slice(2, 4), 16)}, ${parseInt(
+                  sections[currentSection].color.toString(16).slice(4, 6),
+                  16
+                )}, 0.15)`,
+                border: `2px solid #${sections[currentSection].color.toString(16)}`,
+                animationDelay: "0.5s",
+                opacity: 0,
+              }}
             >
-              {content.formula}
+              <div
+                className={`text-5xl md:text-5xl font-bold text-white text-justify ${
+                  content.shake && "glitch"
+                } rtl ${content.title === "سؤالات تحقیق" && "text-lg md:text-2xl"}`}
+                style={{ whiteSpace: "pre-line", lineHeight: "1.8" }}
+              >
+                {content.formula}
+              </div>
             </div>
-          </div>
+          )}
 
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-6">
             {content.items.map((item, i) => (
               <div
                 key={i}
-                className="px-6 py-3 rounded-xl backdrop-blur-sm fade-in "
+                className="px-8 py-4 rounded-2xl backdrop-blur-sm fade-in"
                 style={{
-                  background: "rgba(0, 0, 0, 0.5)",
-                  border: `1px solid #${sections[currentSection].color.toString(16)}40`,
+                  background: "rgba(0, 0, 0, 0.3)",
+                  border: `1.5px solid #${sections[currentSection].color.toString(16)}60`,
                   animationDelay: `${0.7 + i * 0.1}s`,
                   opacity: 0,
                 }}
               >
-                <div className="text-lg text-gray-300">{item}</div>
+                <div className="text-2xl md:text-3xl text-gray-200">{item}</div>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 space-y-3 pointer-events-auto">
+      <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 space-y-4 pointer-events-auto">
         {sections.map((section, i) => (
           <button
             key={section.id}
             onClick={() => setCurrentSection(i)}
-            className="block w-3 h-3 rounded-full transition-all duration-300"
+            className="block w-4 h-4 rounded-full transition-all duration-300"
             style={{
               background: currentSection === i ? `#${section.color.toString(16)}` : "#ffffff40",
               boxShadow: currentSection === i ? `0 0 20px #${section.color.toString(16)}` : "none",
@@ -975,13 +975,9 @@ const CrisisStage = ({ onComplete }) => {
         ))}
       </div>
 
-      {currentSection < sections.length - 1 && (
-        <div className="fixed bottom-8 left-8 text-gray-500 text-sm animate-pulse">اسکرول برای ادامه ↓</div>
-      )}
-
       {currentSection === sections.length - 1 && (
         <div className="fixed bottom-20 left-1/10 -translate-x-1/2 text-center pointer-events-none">
-          <div className="text-cyan-400 text-xl font-bold animate-pulse">✓</div>
+          <div className="text-cyan-400 text-4xl font-bold animate-pulse">✓</div>
         </div>
       )}
     </div>

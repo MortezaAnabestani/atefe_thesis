@@ -139,8 +139,8 @@ const TaxonomyStage = ({ onComplete }) => {
               onClick={() => setSelectedGenre(selectedGenre?.id === genre.id ? null : genre)}
               className="relative focus:outline-none"
               style={{
-                width: "36px",
-                height: "36px",
+                width: "48px",
+                height: "48px",
                 backgroundColor: genre.color,
                 borderRadius: "50%",
                 boxShadow: `0 0 40px ${genre.color}, 0 0 60px ${genre.color}88, inset 0 0 20px rgba(255,255,255,0.5)`,
@@ -149,8 +149,8 @@ const TaxonomyStage = ({ onComplete }) => {
                 transform: selectedGenre?.id === genre.id ? "scale(3)" : "scale(1)",
               }}
             />
-            <div className="absolute top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-              <div className="text-cyan-400 text-xs font-bold bg-black/95 px-3 py-1 rounded border border-cyan-400/50">
+            <div className="absolute top-16 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+              <div className="text-cyan-400 text-2xl font-bold bg-black/95 px-4 py-2 rounded border border-cyan-400/50">
                 {genre.name}
               </div>
             </div>
@@ -158,12 +158,12 @@ const TaxonomyStage = ({ onComplete }) => {
         ))}
       </div>
 
-      <div className="absolute top-8 left-1/2 -translate-x-1/2 flex gap-4 items-center">
+      <div className="absolute top-12 left-1/2 -translate-x-1/2 flex gap-6 items-center">
         <button
           onClick={() =>
             setSelectedGenre(selectedGenre?.id === "codebias-def" ? null : { id: "codebias-def" })
           }
-          className="relative px-4 py-2 text-purple-400 font-light text-sm tracking-widest hover:tracking-normal transition-all rounded"
+          className="relative px-6 py-3 text-purple-400 font-light text-2xl tracking-widest hover:tracking-normal transition-all rounded"
           style={{
             textShadow: "0 0 20px rgba(192, 132, 250, 0.4)",
             letterSpacing: "3px",
@@ -174,7 +174,7 @@ const TaxonomyStage = ({ onComplete }) => {
         >
           تعریف کدبیات
           <span
-            className="inline-block ml-2"
+            className="inline-block ml-3"
             style={{ opacity: selectedGenre?.id === "codebias-def" ? 1 : 0.6 }}
           >
             {selectedGenre?.id === "codebias-def" ? "▼" : "▲"}
@@ -183,7 +183,7 @@ const TaxonomyStage = ({ onComplete }) => {
 
         <button
           onClick={() => setShowTools(!showTools)}
-          className="relative px-4 py-2 text-cyan-400 font-light text-sm tracking-widest hover:tracking-normal transition-all rounded"
+          className="relative px-6 py-3 text-cyan-400 font-light text-2xl tracking-widest hover:tracking-normal transition-all rounded"
           style={{
             textShadow: "0 0 20px rgba(0, 245, 212, 0.4)",
             letterSpacing: "3px",
@@ -194,7 +194,7 @@ const TaxonomyStage = ({ onComplete }) => {
         >
           جعبه ابزار
           <span
-            className="inline-block ml-2"
+            className="inline-block ml-3"
             style={{
               opacity: showTools ? 1 : 0.6,
             }}
@@ -205,7 +205,7 @@ const TaxonomyStage = ({ onComplete }) => {
 
         <button
           onClick={() => setSelectedGenre(selectedGenre?.id === "ai-context" ? null : { id: "ai-context" })}
-          className="relative px-4 py-2 text-amber-500 font-light text-sm tracking-widest hover:tracking-normal transition-all rounded"
+          className="relative px-6 py-3 text-amber-500 font-light text-2xl tracking-widest hover:tracking-normal transition-all rounded"
           style={{
             textShadow: "0 0 20px rgba(255, 157, 92, 0.4)",
             letterSpacing: "3px",
@@ -216,7 +216,7 @@ const TaxonomyStage = ({ onComplete }) => {
         >
           هوش مصنوعی
           <span
-            className="inline-block ml-2"
+            className="inline-block ml-3"
             style={{ opacity: selectedGenre?.id === "ai-context" ? 1 : 0.6 }}
           >
             {selectedGenre?.id === "ai-context" ? "▼" : "▲"}
@@ -226,7 +226,7 @@ const TaxonomyStage = ({ onComplete }) => {
 
       {showTools && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center p-6"
           onClick={() => setShowTools(false)}
         >
           <div
@@ -237,7 +237,7 @@ const TaxonomyStage = ({ onComplete }) => {
             }}
           />
           <div
-            className="relative z-10 max-w-2xl w-full p-8 rounded-lg max-h-96 overflow-y-auto"
+            className="relative z-10 max-w-6xl w-full p-12 rounded-lg max-h-[35rem] overflow-y-auto overflow-x-hidden"
             onClick={(e) => e.stopPropagation()}
             style={{
               background: `
@@ -254,9 +254,9 @@ const TaxonomyStage = ({ onComplete }) => {
               backdropFilter: "blur(15px)",
             }}
           >
-            <div className="mb-6">
+            <div className="mb-8">
               <div
-                className="text-cyan-400 text-xs mb-4 tracking-widest"
+                className="text-cyan-400 text-2xl mb-6 tracking-widest"
                 style={{
                   textShadow: "0 0 15px rgba(0, 245, 212, 0.5)",
                   letterSpacing: "3px",
@@ -265,7 +265,7 @@ const TaxonomyStage = ({ onComplete }) => {
                 ≋ شگردهای زیبایی‌شناختی ≋
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {[
                   {
                     name: "رابط کاربری",
@@ -300,15 +300,15 @@ const TaxonomyStage = ({ onComplete }) => {
                 ].map((tech, i) => (
                   <div
                     key={i}
-                    className="relative pl-4 py-3 transition-all hover:pl-6 hover:scale-105 origin-right group/tech cursor-default"
+                    className="relative pl-6 py-4 transition-all hover:pl-8 hover:scale-105 origin-right group/tech cursor-default"
                     style={{
                       borderLeft: `2px solid rgba(0, 245, 212, ${0.3 + i * 0.1})`,
                       background: "rgba(0, 245, 212, 0.02)",
                     }}
                   >
-                    <div className="flex items-start justify-between mb-2">
+                    <div className="flex items-start justify-between mb-3">
                       <div
-                        className="text-cyan-200 text-sm group-hover/tech:text-cyan-100 transition-colors"
+                        className="text-cyan-200 text-2xl group-hover/tech:text-cyan-100 transition-colors"
                         style={{
                           textShadow: "0 0 10px rgba(0, 245, 212, 0.2)",
                         }}
@@ -316,15 +316,15 @@ const TaxonomyStage = ({ onComplete }) => {
                         {tech.name}
                       </div>
                       <div
-                        className="text-cyan-400 text-xs opacity-0 group-hover/tech:opacity-100 transition-opacity"
+                        className="text-cyan-400 text-xl opacity-0 group-hover/tech:opacity-100 transition-opacity"
                         style={{ textShadow: "0 0 8px rgba(0, 245, 212, 0.3)" }}
                       >
                         {tech.visual}
                       </div>
                     </div>
-                    <div className="text-gray-500 text-xs leading-relaxed mb-1">{tech.desc}</div>
+                    <div className="text-gray-500 text-lg leading-relaxed mb-2">{tech.desc}</div>
                     <div
-                      className="text-cyan-600 text-xs opacity-0 group-hover/tech:opacity-100 transition-opacity max-h-0 group-hover/tech:max-h-20 overflow-hidden"
+                      className="text-cyan-600 text-lg opacity-0 group-hover/tech:opacity-100 transition-opacity max-h-0 group-hover/tech:max-h-20 overflow-hidden"
                       style={{ transitionProperty: "opacity, max-height" }}
                     >
                       {tech.details}
@@ -339,7 +339,7 @@ const TaxonomyStage = ({ onComplete }) => {
 
       {selectedGenre?.id === "codebias-def" && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center p-6"
           onClick={() => setSelectedGenre(null)}
         >
           <div
@@ -350,7 +350,7 @@ const TaxonomyStage = ({ onComplete }) => {
             }}
           />
           <div
-            className="relative z-10 max-w-3xl w-full p-8 rounded-lg max-h-96 overflow-y-auto"
+            className="relative z-10 max-w-6xl w-full p-12 rounded-lg max-h-[35rem] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
             style={{
               background: `
@@ -367,18 +367,18 @@ const TaxonomyStage = ({ onComplete }) => {
               backdropFilter: "blur(15px)",
             }}
           >
-            <div className="mb-6">
+            <div className="mb-8">
               <div
-                className="text-green-600 text-xs mb-4 tracking-widest"
+                className="text-green-600 text-2xl mb-6 tracking-widest"
                 style={{
                   textShadow: "0 0 20px rgba(0, 245, 212, 0.6)",
                   letterSpacing: "3px",
                 }}
               >
-                ◆ تعریف  ◆
+                ◆ تعریف ◆
               </div>
               <h3
-                className="text-lg text-cyan-300 mb-5"
+                className="text-3xl text-cyan-300 mb-8"
                 style={{
                   textShadow: "0 0 15px rgba(0, 245, 212, 0.3)",
                   lineHeight: "2",
@@ -388,7 +388,7 @@ const TaxonomyStage = ({ onComplete }) => {
               </h3>
             </div>
 
-            <div className="space-y-4 mb-6">
+            <div className="space-y-6 mb-8">
               {[
                 {
                   icon: "●",
@@ -413,29 +413,28 @@ const TaxonomyStage = ({ onComplete }) => {
               ].map((item, i) => (
                 <div
                   key={i}
-                  className="relative pl-6 py-2 transition-all hover:pl-8 group/item"
+                  className="relative pl-8 py-3 transition-all hover:pl-10 group/item"
                   style={{
                     borderLeft: `2px solid rgba(0, 245, 212, ${0.3 + i * 0.12})`,
                     background: "rgba(0, 245, 212, 0.03)",
                   }}
                 >
                   <div
-                    className="text-cyan-400 text-sm group-hover/item:text-cyan-200 transition-colors leading-relaxed"
+                    className="text-cyan-400 text-2xl group-hover/item:text-cyan-200 transition-colors leading-relaxed"
                     style={{
                       textShadow: "0 0 10px rgba(0, 245, 212, 0.2)",
                     }}
                   >
-                    <span className="text-green-500 ml-2">{item.icon}</span>
+                    <span className="text-green-500 ml-3">{item.icon}</span>
                     {item.text}
                   </div>
                 </div>
               ))}
             </div>
 
-
             <button
               onClick={() => setSelectedGenre(null)}
-              className="text-green-700 hover:text-green-600 text-xs transition-colors mt-4 font-bold"
+              className="text-green-700 hover:text-green-600 text-2xl transition-colors mt-6 font-bold"
             >
               [بستن]
             </button>
@@ -445,7 +444,7 @@ const TaxonomyStage = ({ onComplete }) => {
 
       {selectedGenre?.id === "ai-context" && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center p-6"
           onClick={() => setSelectedGenre(null)}
         >
           <div
@@ -456,7 +455,7 @@ const TaxonomyStage = ({ onComplete }) => {
             }}
           />
           <div
-            className="relative z-10 max-w-2xl w-full p-8 rounded-lg max-h-96 overflow-y-auto"
+            className="relative z-10 max-w-6xl w-full p-12 rounded-lg max-h-[35rem] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
             style={{
               background: `
@@ -473,9 +472,9 @@ const TaxonomyStage = ({ onComplete }) => {
               backdropFilter: "blur(15px)",
             }}
           >
-            <div className="mb-6">
+            <div className="mb-8">
               <div
-                className="text-amber-600 text-xs mb-4 tracking-widest"
+                className="text-amber-600 text-2xl mb-6 tracking-widest"
                 style={{
                   textShadow: "0 0 20px rgba(255, 157, 92, 0.6)",
                   letterSpacing: "3px",
@@ -484,7 +483,7 @@ const TaxonomyStage = ({ onComplete }) => {
                 ⟡ سطح نوظهور ⟡
               </div>
               <h3
-                className="text-lg text-amber-300 mb-5"
+                className="text-3xl text-amber-300 mb-8"
                 style={{
                   textShadow: "0 0 15px rgba(255, 157, 92, 0.3)",
                   lineHeight: "1.8",
@@ -494,7 +493,7 @@ const TaxonomyStage = ({ onComplete }) => {
               </h3>
             </div>
 
-            <div className="space-y-5 mb-6">
+            <div className="space-y-7 mb-8">
               {[
                 {
                   title: "چالش‌های هستی‌شناختی",
@@ -511,27 +510,27 @@ const TaxonomyStage = ({ onComplete }) => {
               ].map((item, i) => (
                 <div
                   key={i}
-                  className="relative pl-6 py-3 transition-all hover:pl-8 group/item"
+                  className="relative pl-8 py-4 transition-all hover:pl-10 group/item"
                   style={{
                     borderLeft: `3px solid rgba(255, 157, 92, ${0.3 + i * 0.15})`,
                     background: "rgba(0, 0, 0, 0.2)",
                   }}
                 >
                   <div
-                    className="text-amber-400 text-sm mb-2 group-hover/item:text-amber-300 transition-colors"
+                    className="text-amber-400 text-2xl mb-3 group-hover/item:text-amber-300 transition-colors"
                     style={{
                       textShadow: "0 0 12px rgba(255, 157, 92, 0.3)",
                     }}
                   >
                     {item.title}
                   </div>
-                  <div className="text-gray-400 text-sm leading-relaxed">{item.text}</div>
+                  <div className="text-gray-400 text-xl leading-relaxed">{item.text}</div>
                 </div>
               ))}
             </div>
 
             <div
-              className="text-xs text-gray-500 italic border-t border-amber-900/40 pt-4"
+              className="text-xl text-gray-500 italic border-t border-amber-900/40 pt-6"
               style={{
                 textShadow: "0 0 8px rgba(255, 157, 92, 0.1)",
               }}
@@ -541,7 +540,7 @@ const TaxonomyStage = ({ onComplete }) => {
 
             <button
               onClick={() => setSelectedGenre(null)}
-              className="text-amber-700 hover:text-amber-600 text-xs transition-colors mt-4"
+              className="text-amber-700 hover:text-amber-600 text-2xl transition-colors mt-6"
             >
               [بستن]
             </button>
@@ -551,27 +550,27 @@ const TaxonomyStage = ({ onComplete }) => {
 
       {selectedGenre && selectedGenre.example && (
         <div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 p-8 bg-gradient-to-b from-black/95 to-black border-2 max-w-2xl rounded-lg"
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 p-10 bg-gradient-to-b from-black/95 to-black border-2 max-w-3xl rounded-lg"
           style={{ borderColor: selectedGenre.color }}
         >
-          <div className="mb-4">
-            <div className="text-xs font-bold tracking-widest mb-2" style={{ color: selectedGenre.color }}>
+          <div className="mb-6">
+            <div className="text-2xl font-bold tracking-widest mb-3" style={{ color: selectedGenre.color }}>
               GENRE_{selectedGenre.id.toUpperCase()}
             </div>
-            <h2 className="text-2xl font-bold text-white mb-3">{selectedGenre.name}</h2>
+            <h2 className="text-4xl font-bold text-white mb-4">{selectedGenre.name}</h2>
           </div>
 
-          <p className="text-gray-300 mb-3 text-sm">{selectedGenre.desc}</p>
-          <p className="text-gray-400 mb-4 text-xs">{selectedGenre.detail}</p>
+          <p className="text-gray-300 mb-4 text-2xl">{selectedGenre.desc}</p>
+          <p className="text-gray-400 mb-6 text-xl">{selectedGenre.detail}</p>
 
-          <div className="mb-4 p-3 bg-black/50 border-r-2" style={{ borderColor: selectedGenre.color }}>
-            <span className="text-gray-500 text-xs font-bold">نمونه: </span>
-            <span className="text-cyan-400 text-sm">{selectedGenre.example}</span>
+          <div className="mb-6 p-4 bg-black/50 border-r-2" style={{ borderColor: selectedGenre.color }}>
+            <span className="text-gray-500 text-xl font-bold">نمونه: </span>
+            <span className="text-cyan-400 text-2xl">{selectedGenre.example}</span>
           </div>
 
           <button
             onClick={() => setSelectedGenre(null)}
-            className="text-gray-500 hover:text-cyan-400 text-xs transition-colors font-bold"
+            className="text-gray-500 hover:text-cyan-400 text-2xl transition-colors font-bold"
           >
             بستن [ESC]
           </button>
@@ -579,7 +578,7 @@ const TaxonomyStage = ({ onComplete }) => {
       )}
 
       {scrollProgress < 0.9 && (
-        <div className="absolute top-8 right-8 text-gray-600 text-xs font-bold">
+        <div className="absolute top-12 right-12 text-gray-600 text-2xl font-bold">
           [{Math.round(scrollProgress * 100)}%] ادامه
         </div>
       )}

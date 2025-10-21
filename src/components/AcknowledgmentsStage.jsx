@@ -13,9 +13,9 @@ const ResearchPages = () => {
     {
       title: "محدودیت‌های پژوهش",
       content: (
-        <div className="space-y-6 text-gray-800 leading-relaxed text-lg">
+        <div className="space-y-8 text-gray-800 leading-relaxed text-3xl">
           <div>
-            <h3 className="text-xl text-amber-900 font-bold mb-3">محدودیت اول: ماهیت موضوع</h3>
+            <h3 className="text-4xl text-amber-900 font-bold mb-6">محدودیت اول: ماهیت موضوع</h3>
             <p>
               محدودیت اصلی این پژوهش، از ماهیت خودِ موضوع نشئت می‌گیرد: حوزه‌ای نوپا و پراکنده در زبان فارسی.
               این پژوهش برای تحلیل آثار، رویکردی مبتنی‌بر «مطالعۀ موردی» اتخاذ کرده و بر نمونه‌های شاخص و در
@@ -24,7 +24,7 @@ const ResearchPages = () => {
           </div>
 
           <div>
-            <h3 className="text-xl text-amber-900 font-bold mb-3">محدودیت دوم: پوشش ناکامل</h3>
+            <h3 className="text-4xl text-amber-900 font-bold mb-6">محدودیت دوم: پوشش ناکامل</h3>
             <p>
               این تحقیق ادعای ارائۀ یک تاریخ جامع و کامل از تمام تجربه‌های کُدَبی در ایران را ندارد. به‌ویژه
               در برخی گونه‌های شناسایی‌شده مانند «روایت‌های مکان‌مند» یا «نوشتار شبکه‌ای»، یافتن نمونه‌های
@@ -33,16 +33,15 @@ const ResearchPages = () => {
           </div>
 
           <div>
-            <h3 className="text-xl text-amber-900 font-bold mb-3">محدودیت سوم: ماهیت شکننده آثار</h3>
+            <h3 className="text-4xl text-amber-900 font-bold mb-6">محدودیت سوم: ماهیت شکننده آثار</h3>
             <p>
               چالش مهم دیگر، ماهیت فناپذیر و شکنندۀ این آثار است. عدم دسترسی مستقیم به آثار اولیه، تحلیل
               پدیدارشناختی را محدود کرده و ما را به تحلیل اسناد پیرامتنی متکی می‌سازد.
             </p>
           </div>
 
-          <p className="text-lg text-amber-900 font-bold border-r-4 border-amber-400 pr-6 py-4 bg-amber-50">
-            این محدودیت‌ها نه تنها نقاط ضعف این رساله هستند، که درهایی به سوی تحقیقات آتی و فرصت‌های نو
-            می‌باشند.
+          <p className="text-3xl text-amber-900 font-bold border-r-4 border-amber-400 pr-8 py-6 bg-amber-50">
+            این محدودیت‌ها، خود می‌توانند دست‌مایۀ پژوهش‌های آتی قرار گیرند.{" "}
           </p>
         </div>
       ),
@@ -50,9 +49,9 @@ const ResearchPages = () => {
     {
       title: "پیشنهادات برای پژوهش‌های آینده",
       content: (
-        <div className="space-y-6 text-gray-800 leading-relaxed text-lg">
+        <div className="space-y-8 text-gray-800 leading-relaxed text-3xl">
           <div>
-            <h3 className="text-xl text-amber-900 font-bold mb-3">پیشنهاد اول: باستان‌شناسی دیجیتال</h3>
+            <h3 className="text-4xl text-amber-900 font-bold mb-6">پیشنهاد اول: باستان‌شناسی دیجیتال</h3>
             <p>
               نیاز مبرم به پژوهش‌های تاریخی و باستان‌شناسی دیجیتال برای کشف، احیاء و مستندسازی پیکرۀ آثار
               کُدبی فارسی وجود دارد. این کار می‌تواند میراث ادبی ما را از فراموشی نجات دهد.
@@ -60,7 +59,7 @@ const ResearchPages = () => {
           </div>
 
           <div>
-            <h3 className="text-xl text-amber-900 font-bold mb-3">پیشنهاد دوم: مطالعات عمیق‌تر گونه‌ها</h3>
+            <h3 className="text-4xl text-amber-900 font-bold mb-6">پیشنهاد دوم: مطالعات عمیق‌تر گونه‌ها</h3>
             <p>
               با گسترش این پیکره، می‌توان مطالعات موردیِ عمیق‌تری بر روی هر یک از گونه‌ها انجام داد تا چارچوب
               ارائه شده در این رساله را تکمیل و به چالش کشید. به‌ویژه گونه‌های ناشناخته‌ای مانند روایت‌های
@@ -69,14 +68,14 @@ const ResearchPages = () => {
           </div>
 
           <div>
-            <h3 className="text-xl text-amber-900 font-bold mb-3">پیشنهاد سوم: سیاست‌های بایگانی دیجیتال</h3>
+            <h3 className="text-4xl text-amber-900 font-bold mb-6">پیشنهاد سوم: سیاست‌های بایگانی دیجیتال</h3>
             <p>
               بحران «بدن شکننده» ما را به یک اقدام عملی فرا می‌خواند: تدوین سیاست‌های بایگانی دیجیتال و ایجاد
               زیرساخت‌های آموزشی و انتقادی برای تثبیت جایگاه این زیست‌بوم نوپا در جامعۀ ادبی ایران.
             </p>
           </div>
 
-          <p className="text-lg text-amber-900 font-bold border-r-4 border-amber-400 pr-6 py-4 bg-amber-50">
+          <p className="text-3xl text-amber-900 font-bold border-r-4 border-amber-400 pr-8 py-6 bg-amber-50">
             این مسیرها، نه فقط پیشنهادهایی برای آینده، که ضرورت‌هایی حیاتی برای حفظ و فهم بخشی از میراث ادبی
             معاصر ما هستند.
           </p>
@@ -113,7 +112,7 @@ const ResearchPages = () => {
           position: fixed;
           color: rgba(180, 83, 9, 0.25);
           pointer-events: none;
-          font-size: 1rem;
+          font-size: 1.25rem;
           line-height: 2;
           z-index: 0;
         }
@@ -138,38 +137,38 @@ const ResearchPages = () => {
         </p>
       </div>
 
-      <div className="min-h-screen p-12 flex items-center justify-center relative z-10">
-        <div className="w-full max-w-3xl">
+      <div className="min-h-screen p-16 flex items-center justify-center relative z-10">
+        <div className="w-full max-w-6xl">
           <div
-            className="bg-white/90 p-12 rounded-lg shadow-2xl border border-amber-200"
+            className="bg-white/90 p-16 rounded-lg shadow-2xl border border-amber-200"
             style={{
               opacity: isTransitioning ? 1 : 0,
               transform: isTransitioning ? "translateY(0)" : "translateY(20px)",
               transition: "all 0.5s ease-out",
             }}
           >
-            <h2 className="text-3xl text-amber-900 mb-8 text-center border-b-2 border-amber-300 pb-6 font-bold">
+            <h2 className="text-5xl text-amber-900 mb-12 text-center border-b-4 border-amber-300 pb-8 font-bold">
               {pages[currentPage].title}
             </h2>
 
             <div>{pages[currentPage].content}</div>
 
-            <div className="mt-12 text-center">
-              <p className="text-gray-600 text-sm">مهرماه 1404</p>
+            <div className="mt-16 text-center">
+              <p className="text-gray-600 text-2xl">مهرماه 1404</p>
             </div>
           </div>
 
-          <div className="flex justify-between items-center mt-8">
+          <div className="flex justify-between items-center mt-12">
             <button
               onClick={handlePrev}
               disabled={currentPage === 0}
-              className="flex items-center gap-2 px-6 py-3 bg-amber-700 text-white rounded-lg hover:bg-amber-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="flex items-center gap-3 px-8 py-4 bg-amber-700 text-white rounded-lg hover:bg-amber-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-2xl font-bold"
             >
-              <ChevronRight size={20} />
+              <ChevronRight size={28} />
               صفحه قبل
             </button>
 
-            <div className="flex gap-2">
+            <div className="flex gap-4">
               {pages.map((_, idx) => (
                 <button
                   key={idx}
@@ -177,8 +176,8 @@ const ResearchPages = () => {
                     setIsTransitioning(false);
                     setTimeout(() => setCurrentPage(idx), 300);
                   }}
-                  className={`w-3 h-3 rounded-full transition-all ${
-                    idx === currentPage ? "bg-amber-700 w-8" : "bg-amber-300"
+                  className={`w-4 h-4 rounded-full transition-all ${
+                    idx === currentPage ? "bg-amber-700 w-10" : "bg-amber-300"
                   }`}
                 />
               ))}
@@ -187,15 +186,15 @@ const ResearchPages = () => {
             <button
               onClick={handleNext}
               disabled={currentPage === pages.length - 1}
-              className="flex items-center gap-2 px-6 py-3 bg-amber-700 text-white rounded-lg hover:bg-amber-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="flex items-center gap-3 px-8 py-4 bg-amber-700 text-white rounded-lg hover:bg-amber-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-2xl font-bold"
             >
               صفحه بعد
-              <ChevronLeft size={20} />
+              <ChevronLeft size={28} />
             </button>
           </div>
 
-          <div className="text-center mt-6 text-amber-800">
-            <p className="text-sm">
+          <div className="text-center mt-8 text-amber-800">
+            <p className="text-2xl font-bold">
               صفحه {currentPage + 1} از {pages.length}
             </p>
           </div>
