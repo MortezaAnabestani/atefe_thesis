@@ -930,9 +930,9 @@ const CrisisStage = ({ onComplete }) => {
               }}
             >
               <div
-                className={`text-5xl md:text-5xl font-bold text-white text-justify ${
-                  content.shake && "glitch"
-                } rtl ${content.title === "سؤالات تحقیق" && "text-lg md:text-2xl"}`}
+                className={`font-bold text-white text-justify ${content.shake && "glitch"} rtl ${
+                  content.title === "سؤالات تحقیق" ? "text-lg md:text-2xl" : "text-2xl md:text-5xl"
+                }`}
                 style={{ whiteSpace: "pre-line", lineHeight: "1.8" }}
               >
                 {content.formula}

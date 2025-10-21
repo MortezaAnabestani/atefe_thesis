@@ -554,9 +554,6 @@ const TaxonomyStage = ({ onComplete }) => {
           style={{ borderColor: selectedGenre.color }}
         >
           <div className="mb-6">
-            <div className="text-2xl font-bold tracking-widest mb-3" style={{ color: selectedGenre.color }}>
-              GENRE_{selectedGenre.id.toUpperCase()}
-            </div>
             <h2 className="text-4xl font-bold text-white mb-4">{selectedGenre.name}</h2>
           </div>
 

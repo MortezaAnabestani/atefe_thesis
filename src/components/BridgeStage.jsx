@@ -125,15 +125,6 @@ const BridgeStage = ({ onComplete }) => {
           <div className="text-cyan-300 text-3xl font-bold">نقد کُدَبی فارسی</div>
         </div>
       </div>
-
-      {bridgeProgress >= 1 && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center animate-pulse pointer-events-none">
-          <div className="text-center">
-            <div className="text-6xl text-cyan-400 font-bold mb-6">پل ساخته شد</div>
-            <div className="text-gray-400 text-4xl">مسیر برای تحلیل و کاوش تاریک‌تر بازگشایی شد...</div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
